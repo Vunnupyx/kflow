@@ -50,60 +50,54 @@ export class CanvasRendererService {
 
     private renderChildTree(rootNode: NgFlowchartStepComponent, rootRect: Partial<DOMRect>, canvasRect: DOMRect) {
         //the rootNode passed in is already rendered. just need to render its children /subtree
-
         if (!rootNode.hasChildren()) {
             return;
         }
 
-        //top of the child row is simply the relative bottom of the root + stepGap
-        const childYTop = (rootRect.bottom - canvasRect.top * this.scale) + this.getStepGap();
+        const rootRight = rootRect.right - canvasRect.left * this.scale;
+        const childLeft = rootRight + this.getStepGap();
   
-        const rootWidth = rootRect.width / this.scale
+        const rootHeight = rootRect.height / this.scale
 
-        const rootXCenter = (rootRect.left - canvasRect.left) + (rootWidth / 2);
+        const rootCenter = (rootRect.top - canvasRect.top) + (rootHeight / 2);
 
-
-        //get the width of the child trees
-        let childTreeWidths = {};
-        let totalTreeWidth = 0;
+        let childTreeHeights = {};
+        let totalTreeHeight = 0;
 
         rootNode.children.forEach(child => {
-            let totalChildWidth = child.getNodeTreeWidth(this.getStepGap());
-            totalChildWidth = totalChildWidth / this.scale
-            childTreeWidths[child.nativeElement.id] = totalChildWidth;
+            let totalChildHeight = child.getNodeTreeWidth(this.getStepGap());
+            totalChildHeight = totalChildHeight / this.scale
+            childTreeHeights[child.nativeElement.id] = totalChildHeight;
 
-            totalTreeWidth += totalChildWidth;
+            totalTreeHeight += totalChildHeight;
         });
 
-        //add length for stepGaps between child trees
-        totalTreeWidth += (rootNode.children.length - 1) * this.getStepGap();
+        totalTreeHeight += (rootNode.children.length - 1) * this.getStepGap();
 
-        //if we have more than 1 child, we want half the extent on the left and half on the right
-        let leftXTree = rootXCenter - (totalTreeWidth / 2);
+        let leftYTree = rootCenter - (totalTreeHeight / 2);
         
-        // dont allow it to go negative since you cant scroll that way
-        leftXTree = Math.max(0, leftXTree)
+        leftYTree = Math.max(0, leftYTree)
 
         rootNode.children.forEach(child => {
 
-            let childExtent = childTreeWidths[child.nativeElement.id];
+            let childExtent = childTreeHeights[child.nativeElement.id];
 
-            let childLeft = leftXTree + (childExtent / 2) - (child.nativeElement.offsetWidth / 2);
+            let childTop = leftYTree + (childExtent / 2) - (child.nativeElement.offsetHeight / 2);
 
 
-            child.zsetPosition([childLeft, childYTop]);
+            child.zsetPosition([childLeft, childTop]);
 
             const currentChildRect = child.getCurrentRect(canvasRect);
 
-            const childWidth = currentChildRect.width / this.scale
+            const childHeight = currentChildRect.height / this.scale
            
             child.zdrawArrow(
-                [rootXCenter, (rootRect.bottom - canvasRect.top * this.scale)],
-                [currentChildRect.left + childWidth / 2 - canvasRect.left, currentChildRect.top - canvasRect.top]
+                [rootRight, rootCenter],
+                [currentChildRect.left - canvasRect.left, currentChildRect.top + childHeight / 2 - canvasRect.top]
             );
 
             this.renderChildTree(child, currentChildRect, canvasRect);
-            leftXTree += childExtent + this.getStepGap();
+            leftYTree += childExtent + this.getStepGap();
         })
 
     }
@@ -348,8 +342,8 @@ export class CanvasRendererService {
     private setRootPosition(step: NgFlowchartStepComponent, dragEvent?: DragEvent) {
 
         if (!dragEvent) {
-            const canvasTop = this.getCanvasTopCenterPosition(step.nativeElement);
-            step.zsetPosition(canvasTop, true)
+            const canvasLeft = this.getCanvasLeftVerticalCenterPosition(step.nativeElement);
+            step.zsetPosition(canvasLeft, true)
             return;
         }
 
@@ -359,7 +353,7 @@ export class CanvasRendererService {
                 step.zsetPosition(canvasCenter, true);
                 return;
             case 'TOP_CENTER':
-                const canvasTop = this.getCanvasTopCenterPosition(step.nativeElement);
+                const canvasTop = this.getCanvasLeftVerticalCenterPosition(step.nativeElement);
                 step.zsetPosition(canvasTop, true)
                 return;
             default:
@@ -378,15 +372,15 @@ export class CanvasRendererService {
         ]
     }
 
-    private getCanvasTopCenterPosition(htmlRootElement: HTMLElement) {
+    private getCanvasLeftVerticalCenterPosition(htmlRootElement: HTMLElement) {
         const canvasRect = this.getCanvasContentElement().getBoundingClientRect();
-        const rootElementHeight = htmlRootElement.getBoundingClientRect().height
-        const yCoord = rootElementHeight / 2 + this.options.options.stepGap
-        const scaleYOffset = (1 - this.scale) * 100
+        const rootElementWidth = htmlRootElement.getBoundingClientRect().width;
+        const xCoord = rootElementWidth / 2 + this.options.options.stepGap
+        const scaleXOffset = (1 - this.scale) * 100
             
         return [
-            canvasRect.width / (this.scale * 2),
-            yCoord + scaleYOffset
+            xCoord + scaleXOffset,
+            canvasRect.height / (this.scale * 2)
         ]
     }
 
