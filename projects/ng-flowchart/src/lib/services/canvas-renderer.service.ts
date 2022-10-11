@@ -175,14 +175,14 @@ export class CanvasRendererService {
                 result = 'deadzone';
             }
 
-            if (absYDistance > absXDistance) {
+            if (absYDistance > absXDistance && !targetStep.isRootElement()) {
                 result = {
                     step: targetStep,
                     position: yDiff > 0 ? 'BELOW' : 'ABOVE',
                     proximity: absYDistance
                 };
             }
-            else if (!this.options.options.isSequential && !targetStep.isRootElement()) {
+            else if (!this.options.options.isSequential) {
                 result = {
                     step: targetStep,
                     position: xDiff > 0 ? 'RIGHT' : 'LEFT',

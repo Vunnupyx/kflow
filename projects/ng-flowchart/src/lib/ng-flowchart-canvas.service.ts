@@ -317,17 +317,17 @@ export class NgFlowchartCanvasService {
 
     switch (dropTarget.position) {
       case 'ABOVE':
-        response = this.placeStepAbove(step, dropTarget.step);
+        response = this.placeStepAdjacent(step, dropTarget.step, true);
         break;
       case 'BELOW':
-        response = this.placeStepBelow(step, dropTarget.step);
+        response = this.placeStepAdjacent(step, dropTarget.step, false);
         console.log(response, [...dropTarget.step.children]);
         break;
       case 'LEFT':
-        response = this.placeStepAdjacent(step, dropTarget.step, true);
+        response = this.placeStepLeft(step, dropTarget.step);
         break;
       case 'RIGHT':
-        response = this.placeStepAdjacent(step, dropTarget.step, false);
+        response = this.placeStepRight(step, dropTarget.step);
         break;
       default:
         break;
@@ -339,7 +339,7 @@ export class NgFlowchartCanvasService {
     return response;
   }
 
-  private placeStepBelow(
+  private placeStepRight(
     newStep: NgFlowchartStepComponent,
     parentStep: NgFlowchartStepComponent
   ): DropResponse {
@@ -352,7 +352,7 @@ export class NgFlowchartCanvasService {
   private placeStepAdjacent(
     newStep: NgFlowchartStepComponent,
     siblingStep: NgFlowchartStepComponent,
-    isLeft: boolean = true
+    isBelow: boolean = true
   ): DropResponse {
     if (siblingStep.parent) {
       //find the adjacent steps index in the parents child array
@@ -361,7 +361,7 @@ export class NgFlowchartCanvasService {
       );
       siblingStep.parent.zaddChildSibling0(
         newStep,
-        adjacentIndex + (isLeft ? 0 : 1)
+        adjacentIndex + (isBelow ? 0 : 1)
       );
     } else {
       console.warn('Parallel actions must have a common parent');
@@ -376,7 +376,7 @@ export class NgFlowchartCanvasService {
     };
   }
 
-  private placeStepAbove(
+  private placeStepLeft(
     newStep: NgFlowchartStepComponent,
     childStep: NgFlowchartStepComponent
   ): DropResponse {
