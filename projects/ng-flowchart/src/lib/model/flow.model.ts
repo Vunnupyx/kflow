@@ -73,8 +73,8 @@ export namespace NgFlowchart {
     /** An inner deadzone radius (in pixels) that will not register the hover icon  */
     hoverDeadzoneRadius?: number = 20;
 
-    /** Is the flow sequential? If true, then you will not be able to drag parallel steps */
-    isSequential?: boolean = false;
+    /** Is the flow sequential? If true, then you will be able to drag parallel steps */
+    allowMultipleChildNodes?: boolean = false;
 
     /** The default root position when dropped. Default is TOP_CENTER */
     rootPosition?: 'TOP_CENTER' | 'CENTER' | 'FREE' = 'TOP_CENTER';

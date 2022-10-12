@@ -197,10 +197,10 @@ export class AppComponent {
     };
   }
 
-  onSequentialChange(event) {
+  onMultipleChildNodesChange(event) {
     this.options = {
       ...this.options,
-      isSequential: event.target.checked
+      allowMultipleChildNodes: event.target.checked
     }
   }
 
