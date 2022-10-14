@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { KEditorModule } from '../../../ng-flowchart/src/pages/k-editor/k-editor.module';
+import { KEditorModule } from '../../../ng-flowchart/src/component/k-editor/k-editor.module';
 
 
 
