@@ -1,12 +1,12 @@
 <button (click)="hideItem1 = !hideItem1;">
     {{hideItem1 ? 'Hide' : 'Show'}}
 </button>
-<k-editor *ngIf="hideItem1"></k-editor>
+<k-editor *ngIf="hideItem1" [value]="sampleJson" (valueChange)="showFlowData($event)"></k-editor>
 <button (click)="hideItem2 = !hideItem2;">
     {{hideItem2 ? 'Hide' : 'Show'}}
 </button>
-<k-editor *ngIf="hideItem2"></k-editor>
+<k-editor *ngIf="hideItem2" [value]="sampleJson" (valueChange)="showFlowData($event)"></k-editor>
 <button (click)="hideItem3 = !hideItem3;">
     {{hideItem3 ? 'Hide' : 'Show'}}
 </button>
-<k-editor *ngIf="hideItem3"></k-editor>
+<k-editor *ngIf="hideItem3" [value]="sampleJson" (valueChange)="showFlowData($event)"></k-editor>

@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { CustomStepComponent } from './components/custom-step/custom-step.component';
 import { NestedFlowComponent } from './components/nested-flow/nested-flow.component';
 import { FormStepComponent } from './components/form-step/form-step.component';
@@ -6,6 +6,7 @@ import { RouteStepComponent } from './components/custom-step/route-step/route-st
 import { NgFlowchart } from '../../lib/model/flow.model';
 import { NgFlowchartStepRegistry } from '../../lib/ng-flowchart-step-registry.service';
 import { NgFlowchartCanvasDirective } from '../../lib/ng-flowchart-canvas.directive';
+import { Variables } from '../../models';
 
 @Component({
   selector: 'k-editor',
@@ -13,6 +14,10 @@ import { NgFlowchartCanvasDirective } from '../../lib/ng-flowchart-canvas.direct
   styleUrls: ['./k-editor.component.scss']
 })
 export class KEditorComponent {
+  @Input() value: any;
+  @Input() variables: Variables;
+  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
+
   callbacks: NgFlowchart.Callbacks = {};
   options: NgFlowchart.Options = {
     stepGap: 40,
@@ -24,58 +29,6 @@ export class KEditorComponent {
 
   @ViewChild('normalStep')
   normalStepTemplate: TemplateRef<any>;
-
-  sampleJson = `{
-    "root": {
-      "id": "s1624206177187",
-      "type": "log",
-      "data": {
-        "name": "Log",
-        "icon": {
-          "name": "log-icon",
-          "color": "blue"
-        },
-        "config": {
-          "message": null,
-          "severity": null
-        }
-      },
-      "children": [
-        {
-          "id": "s1624206178618",
-          "type": "log",
-          "data": {
-            "name": "Log",
-            "icon": {
-              "name": "log-icon",
-              "color": "blue"
-            },
-            "config": {
-              "message": null,
-              "severity": null
-            }
-          },
-          "children": []
-        },
-        {
-          "id": "s1624206180286",
-          "type": "log",
-          "data": {
-            "name": "Log",
-            "icon": {
-              "name": "log-icon",
-              "color": "blue"
-            },
-            "config": {
-              "message": null,
-              "severity": null
-            }
-          },
-          "children": []
-        }
-      ]
-    }
-  }`;
 
   items = [
     {
@@ -167,17 +120,12 @@ export class KEditorComponent {
   }
 
   showUpload() {
-    this.canvas.getFlow().upload(this.sampleJson);
+    this.canvas.getFlow().upload(this.value);
   }
 
   showFlowData() {
-    let json = this.canvas.getFlow().toJSON(4);
-
-    var x = window.open();
-    x.document.open();
-    x.document.write('<html><head><title>Flowchart Json</title></head><body><pre>' + json + '</pre></body></html>');
-    x.document.close();
-
+    const json = this.canvas.getFlow().toJSON(4);
+    this.valueChange.emit(json);
   }
 
   clearData() {
