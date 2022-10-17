@@ -8,8 +8,3 @@ export interface VariableGroup {
     name: string;
     variables: Variable[];
 }
-
-export interface Variables {
-    variable: Variable;
-    variableGroup: VariableGroup;
-}

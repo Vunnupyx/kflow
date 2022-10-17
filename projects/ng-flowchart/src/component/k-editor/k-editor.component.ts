@@ -6,7 +6,7 @@ import { RouteStepComponent } from './components/custom-step/route-step/route-st
 import { NgFlowchart } from '../../lib/model/flow.model';
 import { NgFlowchartStepRegistry } from '../../lib/ng-flowchart-step-registry.service';
 import { NgFlowchartCanvasDirective } from '../../lib/ng-flowchart-canvas.directive';
-import { Variables } from '../../models';
+import { VariableGroup } from '../../models';
 
 @Component({
   selector: 'k-editor',
@@ -14,9 +14,20 @@ import { Variables } from '../../models';
   styleUrls: ['./k-editor.component.scss']
 })
 export class KEditorComponent {
-  @Input() value: any;
-  @Input() variables: Variables;
-  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
+  @Input() variables: VariableGroup;
+  @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();
+
+  private _value: any;
+
+  get value(): any {
+    return this._value;
+  }
+
+  @Input()
+  set value(value: any) {
+    this._value = value;
+    this.showUpload();
+  }
 
   callbacks: NgFlowchart.Callbacks = {};
   options: NgFlowchart.Options = {
@@ -96,11 +107,6 @@ export class KEditorComponent {
     this.stepRegistry.registerStep('nested-flow', NestedFlowComponent);
     this.stepRegistry.registerStep('form-step', FormStepComponent);
     this.stepRegistry.registerStep('route-step', RouteStepComponent);
-    setTimeout(() => {
-      this.showUpload();
-    }, 0);
-    //this.showUpload();
-
   }
 
   onDropError(error: NgFlowchart.DropError) {
@@ -120,7 +126,9 @@ export class KEditorComponent {
   }
 
   showUpload() {
-    this.canvas.getFlow().upload(this.value);
+    setTimeout(() => {
+      this.canvas.getFlow().upload(this.value);
+    }, 0);
   }
 
   showFlowData() {
@@ -130,6 +138,7 @@ export class KEditorComponent {
 
   clearData() {
     this.canvas.getFlow().clear();
+    this.showFlowData();
   }
 
   onGapChanged(event) {

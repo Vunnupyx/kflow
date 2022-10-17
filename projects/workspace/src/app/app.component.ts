@@ -64,10 +64,7 @@ export class AppComponent {
     }
   }`;
 
-  public showFlowData(value: string): void {
-    const x = window.open();
-    x.document.open();
-    x.document.write('<html><head><title>Flowchart Json</title></head><body><pre>' + value + '</pre></body></html>');
-    x.document.close();
+  public showFlowData(value: any): void {
+    console.log(value);
   }
 }
