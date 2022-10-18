@@ -98,6 +98,7 @@ export class KEditorComponent {
     this.callbacks.onMoveError = this.onMoveError;
     this.callbacks.afterDeleteStep = this.afterDeleteStep;
     this.callbacks.beforeDeleteStep = this.beforeDeleteStep;
+    this.callbacks.onDropStep = this.onDropStep.bind(this);
   }
 
   ngAfterViewInit() {
@@ -109,6 +110,10 @@ export class KEditorComponent {
     this.stepRegistry.registerStep('route-step', RouteStepComponent);
   }
 
+  onDropStep() {
+    this.valueChanged();
+  }
+
   onDropError(error: NgFlowchart.DropError) {
     console.log(error);
   }
@@ -118,31 +123,32 @@ export class KEditorComponent {
   }
 
   beforeDeleteStep(step) {
-    console.log(JSON.stringify(step.children));
+    // console.log(JSON.stringify(step.children));
   }
 
   afterDeleteStep(step) {
-    console.log(JSON.stringify(step.children));
+    // console.log(JSON.stringify(step.children));
   }
 
   showUpload() {
     setTimeout(() => {
-      this.canvas.getFlow().upload(this.value);
+      this.canvas.getFlow().upload(this.value).then(() => {
+        this.valueChanged();
+      });
     }, 0);
   }
 
-  showFlowData() {
+  valueChanged() {
     const json = this.canvas.getFlow().toJSON(4);
     this.valueChange.emit(json);
   }
 
   clearData() {
     this.canvas.getFlow().clear();
-    this.showFlowData();
+    this.valueChanged();
   }
 
   onGapChanged(event) {
-
     this.options = {
       ...this.options,
       stepGap: parseInt(event.target.value)
@@ -158,6 +164,7 @@ export class KEditorComponent {
 
   onDelete(id) {
     this.canvas.getFlow().getStep(id).destroy(true);
+    this.valueChanged();
   }
 
 }
