@@ -6,13 +6,11 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'workspace';
+  dataBucket = {} as any;
 
-  hideItem1 = true;
-  hideItem2 = true;
-  hideItem3 = true;
+  visibleInstanceIndex = 0;
 
-  sampleJson = `{
+  sampleJson = {
   "root": {
     "id": "s1624206177187",
     "type": "log",
@@ -63,9 +61,10 @@ export class AppComponent {
       }
     ]
   }
-}`;
+};
 
-  public showFlowData(value: any): void {
-    console.log(value);
+  public onValueChange(source: string, value: object): void {
+    this.dataBucket[source] = value;
+    console.log('UPD', source, value);
   }
 }

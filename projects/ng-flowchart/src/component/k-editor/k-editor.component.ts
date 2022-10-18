@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { CustomStepComponent } from './components/custom-step/custom-step.component';
 import { NestedFlowComponent } from './components/nested-flow/nested-flow.component';
 import { FormStepComponent } from './components/form-step/form-step.component';
@@ -13,21 +13,11 @@ import { VariableGroup } from '../../models';
   templateUrl: './k-editor.component.html',
   styleUrls: ['./k-editor.component.scss']
 })
-export class KEditorComponent {
+export class KEditorComponent implements OnChanges, AfterViewInit {
   @Input() variables: VariableGroup;
-  @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();
-
-  private _value: any;
-
-  get value(): any {
-    return this._value;
-  }
-
-  @Input()
-  set value(value: any) {
-    this._value = value;
-    this.showUpload();
-  }
+  
+  @Input() value: object;
+  @Output() valueChange: EventEmitter<object> = new EventEmitter<object>();
 
   callbacks: NgFlowchart.Callbacks = {};
   options: NgFlowchart.Options = {
@@ -93,59 +83,47 @@ export class KEditorComponent {
 
   disabled = false;
 
-  constructor(private stepRegistry: NgFlowchartStepRegistry) {
-    this.callbacks.onDropError = this.onDropError;
-    this.callbacks.onMoveError = this.onMoveError;
-    this.callbacks.afterDeleteStep = this.afterDeleteStep;
-    this.callbacks.beforeDeleteStep = this.beforeDeleteStep;
-    this.callbacks.onDropStep = this.onDropStep.bind(this);
+  constructor(
+    private stepRegistry: NgFlowchartStepRegistry,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {
+    this.callbacks.onDropError = (x) => this.onDropError(x);
+    this.callbacks.onMoveError = (x) => this.onMoveError(x);
+    this.callbacks.onDropStep = () => this.onDropStep();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.value) {
+      this._renderValue(changes.value.currentValue);
+    }
   }
 
   ngAfterViewInit() {
-    // this.stepRegistry.registerStep('rest-get', this.normalStepTemplate);
     this.stepRegistry.registerStep('log', this.normalStepTemplate);
     this.stepRegistry.registerStep('router', CustomStepComponent);
     this.stepRegistry.registerStep('nested-flow', NestedFlowComponent);
     this.stepRegistry.registerStep('form-step', FormStepComponent);
     this.stepRegistry.registerStep('route-step', RouteStepComponent);
+
+    this._renderValue(this.value);
+    this.changeDetectorRef.detectChanges();
   }
 
   onDropStep() {
-    this.valueChanged();
+    this._emitValueChange();
   }
 
   onDropError(error: NgFlowchart.DropError) {
-    console.log(error);
+    console.error(error);
   }
 
   onMoveError(error: NgFlowchart.MoveError) {
-    console.log(error);
-  }
-
-  beforeDeleteStep(step) {
-    // console.log(JSON.stringify(step.children));
-  }
-
-  afterDeleteStep(step) {
-    // console.log(JSON.stringify(step.children));
-  }
-
-  showUpload() {
-    setTimeout(() => {
-      this.canvas.getFlow().upload(this.value).then(() => {
-        this.valueChanged();
-      });
-    }, 0);
-  }
-
-  valueChanged() {
-    const json = this.canvas.getFlow().toJSON(4);
-    this.valueChange.emit(json);
+    console.error(error);
   }
 
   clearData() {
     this.canvas.getFlow().clear();
-    this.valueChanged();
+    this._emitValueChange();
   }
 
   onGapChanged(event) {
@@ -164,7 +142,18 @@ export class KEditorComponent {
 
   onDelete(id) {
     this.canvas.getFlow().getStep(id).destroy(true);
-    this.valueChanged();
+    this._emitValueChange();
+  }
+
+  private async _renderValue(value: object) {
+    if (!this.canvas) { 
+      return;
+    }
+    await this.canvas.getFlow().upload(value);
+  }
+
+  private _emitValueChange() {
+    this.valueChange.emit(this.canvas.getFlow().toObject());
   }
 
 }
