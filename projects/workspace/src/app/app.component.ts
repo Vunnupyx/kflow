@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import { Variable, VariableGroup } from 'projects/ng-flowchart/src/models';
 
 @Component({
   selector: 'app-root',
@@ -62,6 +63,63 @@ export class AppComponent {
     ]
   }
 };
+
+  varaibles = [
+    {
+      id: 'constants',
+      name: 'Constants',
+      variables: [
+        {
+          id: 'Id1',
+          name: 'Name 1',
+        } as Variable,
+        {
+          id: 'Id2',
+          name: 'Name 2',
+        } as Variable,
+        {
+          id: 'Id3',
+          name: 'Name 3',
+        } as Variable,
+      ],
+    } as VariableGroup,
+    {
+      id: 'sensors',
+      name: 'Sensors',
+      variables: [
+        {
+          id: 'Id1',
+          name: 'Name 1',
+        } as Variable,
+        {
+          id: 'Id2',
+          name: 'Name 2',
+        } as Variable,
+        {
+          id: 'Id3',
+          name: 'Name 3',
+        } as Variable,
+      ],
+    } as VariableGroup,
+    {
+      id: 'kpis',
+      name: 'KPIs',
+      variables: [
+        {
+          id: 'Id1',
+          name: 'Name 1',
+        } as Variable,
+        {
+          id: 'Id2',
+          name: 'Name 2',
+        } as Variable,
+        {
+          id: 'Id3',
+          name: 'Name 3',
+        } as Variable,
+      ],
+    } as VariableGroup,
+  ];
 
   public onValueChange(source: string, value: object): void {
     this.dataBucket[source] = value;
