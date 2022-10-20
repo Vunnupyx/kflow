@@ -18,7 +18,7 @@ export class AppComponent {
     "data": {
       "name": "Log",
       "icon": {
-        "name": "log-icon",
+        "name": "cross.svg",
         "color": "blue"
       },
       "config": {
@@ -33,7 +33,7 @@ export class AppComponent {
         "data": {
           "name": "Log",
           "icon": {
-            "name": "log-icon",
+            "name": "minus.svg",
             "color": "blue"
           },
           "config": {
@@ -48,7 +48,7 @@ export class AppComponent {
             "data": {
               "name": "Log",
               "icon": {
-                "name": "log-icon",
+                "name": "plus.svg",
                 "color": "blue"
               },
               "config": {

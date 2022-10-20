@@ -1,0 +1,5 @@
+<div class="search-wrapper">
+  <ul>
+    <li (click) = "selectItem(list)" *ngFor="let list of filterData?.displayNames | filter: searchInput">{{list}}</li>
+  </ul>
+</div>

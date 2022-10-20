@@ -1,12 +1,10 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { CustomStepComponent } from './components/custom-step/custom-step.component';
-import { NestedFlowComponent } from './components/nested-flow/nested-flow.component';
-import { FormStepComponent } from './components/form-step/form-step.component';
-import { RouteStepComponent } from './components/custom-step/route-step/route-step.component';
 import { NgFlowchart } from '../../lib/model/flow.model';
 import { NgFlowchartStepRegistry } from '../../lib/ng-flowchart-step-registry.service';
 import { NgFlowchartCanvasDirective } from '../../lib/ng-flowchart-canvas.directive';
 import { VariableGroup } from '../../models';
+import {NumericStepComponent} from './components/numeric-step/numeric-step.component';
+import {SelectStepComponent} from './components/select-step/select-step.component';
 
 @Component({
   selector: 'k-editor',
@@ -37,7 +35,43 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
       type: 'log',
       data: {
         name: 'Log',
-        icon: { name: 'log-icon', color: 'blue' },
+        icon: { name: 'plus.svg', color: 'blue' },
+        config: {
+          message: null,
+          severity: null
+        }
+      }
+    },
+    {
+      name: 'Logger',
+      type: 'log',
+      data: {
+        name: 'Log',
+        icon: { name: 'minus.svg', color: 'blue' },
+        config: {
+          message: null,
+          severity: null
+        }
+      }
+    },
+    {
+      name: 'Logger',
+      type: 'log',
+      data: {
+        name: 'Log',
+        icon: { name: 'cross.svg', color: 'blue' },
+        config: {
+          message: null,
+          severity: null
+        }
+      }
+    },
+    {
+      name: 'Logger',
+      type: 'log',
+      data: {
+        name: 'Log',
+        icon: { name: 'divide.svg', color: 'blue' },
         config: {
           message: null,
           severity: null
@@ -48,34 +82,23 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
 
   customOps = [
     {
-      paletteName: 'Router',
+      paletteName: 'Numeric',
       step: {
-        template: CustomStepComponent,
-        type: 'router',
+        template: NumericStepComponent,
+        type: 'numeric',
+        data: null
+      }
+    },
+    {
+      paletteName: 'Select',
+      step: {
+        template: SelectStepComponent,
+        type: 'select',
         data: {
           name: 'Routing Block'
         }
       }
     },
-    {
-      paletteName: 'Form Step',
-      step: {
-        template: FormStepComponent,
-        type: 'form-step',
-        data: '123'
-      }
-    },
-    {
-      paletteName: 'Nested Flow',
-      step: {
-        template: NestedFlowComponent,
-        type: 'nested-flow',
-        data: {
-          name: 'Nested Flow'
-        }
-      }
-
-    }
   ];
 
   @ViewChild(NgFlowchartCanvasDirective)
@@ -100,10 +123,8 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.stepRegistry.registerStep('log', this.normalStepTemplate);
-    this.stepRegistry.registerStep('router', CustomStepComponent);
-    this.stepRegistry.registerStep('nested-flow', NestedFlowComponent);
-    this.stepRegistry.registerStep('form-step', FormStepComponent);
-    this.stepRegistry.registerStep('route-step', RouteStepComponent);
+    this.stepRegistry.registerStep('numeric', NumericStepComponent);
+    this.stepRegistry.registerStep('select', SelectStepComponent);
 
     this._renderValue(this.value);
     this.changeDetectorRef.detectChanges();

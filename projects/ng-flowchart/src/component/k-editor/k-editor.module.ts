@@ -7,6 +7,8 @@ import { RouteStepComponent } from './components/custom-step/route-step/route-st
 import { NestedFlowComponent } from './components/nested-flow/nested-flow.component';
 import { FormStepComponent } from './components/form-step/form-step.component';
 import { FormsModule } from '@angular/forms';
+import { NumericStepComponent } from './components/numeric-step/numeric-step.component';
+import {SelectStepModule} from './components/select-step/select-step.module';
 
 
 
@@ -16,12 +18,14 @@ import { FormsModule } from '@angular/forms';
     CustomStepComponent,
     RouteStepComponent,
     NestedFlowComponent,
-    FormStepComponent
+    FormStepComponent,
+    NumericStepComponent,
   ],
   imports: [
     CommonModule,
     NgFlowchartModule,
-    FormsModule
+    FormsModule,
+      SelectStepModule
   ],
   exports: [KEditorComponent]
 })
