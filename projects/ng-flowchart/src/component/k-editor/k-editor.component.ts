@@ -3,8 +3,8 @@ import { NgFlowchart } from '../../lib/model/flow.model';
 import { NgFlowchartStepRegistry } from '../../lib/ng-flowchart-step-registry.service';
 import { NgFlowchartCanvasDirective } from '../../lib/ng-flowchart-canvas.directive';
 import { VariableGroup } from '../../models';
-import {NumericStepComponent} from './components/numeric-step/numeric-step.component';
-import {SelectStepComponent} from './components/select-step/select-step.component';
+import { NumericStepComponent } from './components/numeric-step/numeric-step.component';
+import { SelectStepComponent } from './components/select-step/select-step.component';
 
 @Component({
   selector: 'k-editor',
@@ -12,8 +12,8 @@ import {SelectStepComponent} from './components/select-step/select-step.componen
   styleUrls: ['./k-editor.component.scss']
 })
 export class KEditorComponent implements OnChanges, AfterViewInit {
-  @Input() variables: VariableGroup;
-  
+  @Input() variables: VariableGroup[];
+
   @Input() value: object;
   @Output() valueChange: EventEmitter<object> = new EventEmitter<object>();
 
@@ -80,26 +80,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     }
   ];
 
-  customOps = [
-    {
-      paletteName: 'Numeric',
-      step: {
-        template: NumericStepComponent,
-        type: 'numeric',
-        data: null
-      }
-    },
-    {
-      paletteName: 'Select',
-      step: {
-        template: SelectStepComponent,
-        type: 'select',
-        data: {
-          name: 'Routing Block'
-        }
-      }
-    },
-  ];
+  customOps;
 
   @ViewChild(NgFlowchartCanvasDirective)
   canvas: NgFlowchartCanvasDirective;
@@ -128,6 +109,30 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
 
     this._renderValue(this.value);
     this.changeDetectorRef.detectChanges();
+  }
+
+  ngOnInit() {
+    this.customOps = [
+      {
+        paletteName: 'Numeric',
+        step: {
+          template: NumericStepComponent,
+          type: 'numeric',
+          data: null
+        }
+      },
+      {
+        paletteName: 'Select',
+        step: {
+          template: SelectStepComponent,
+          type: 'select',
+          data: {
+            selectedOption: '',
+            dropdownOptions: this.variables,
+          }
+        }
+      },
+    ];
   }
 
   onDropStep() {
@@ -167,7 +172,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
   }
 
   private async _renderValue(value: object) {
-    if (!this.canvas) { 
+    if (!this.canvas) {
       return;
     }
     await this.canvas.getFlow().upload(value);

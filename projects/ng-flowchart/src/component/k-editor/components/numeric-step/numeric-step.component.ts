@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NgFlowchartStepComponent } from 'projects/ng-flowchart/src/lib/ng-flowchart-step/ng-flowchart-step.component';
-import {NgFlowchart} from '../../../../lib/model/flow.model';
 
 @Component({
   selector: 'lib-numeric-step',
@@ -9,47 +8,24 @@ import {NgFlowchart} from '../../../../lib/model/flow.model';
 })
 export class NumericStepComponent extends NgFlowchartStepComponent {
 
-  routes = [];
-
-  ngOnInit(): void {
-  }
-
-  canDrop(dropEvent: NgFlowchart.DropTarget): boolean {
-    return true;
-  }
-
-  canDeleteStep(): boolean {
-    return true;
-  }
-
-  getDropPositionsForStep(pendingStep: NgFlowchart.PendingStep): NgFlowchart.DropPosition[] {
-    if (pendingStep.template !== NumericStepComponent) {
-      return ['ABOVE', 'LEFT', 'RIGHT'];
-    }
-    else {
-      return ['BELOW'];
-    }
-  }
-
-  delete() {
-    //recursively delete
+  delete(): void {
     this.destroy(true);
   }
+
   onChangeNumeric(event: any): void {
     const value = (event.target.value || '').trim();
     if (!Number(value)) {
       return;
     }
-    console.log(this.data);
     this.data = value;
   }
 
   public inputValidator(event: any): void {
     const pattern = /^[+-]?([0-9]*[.])?[0-9]+$/;
-    // ^[+-]?([0-9]*[.])?[0-9]+$  [^+-]?([0-9]*[.])?[0-9]+$
     if (!pattern.test(event.target.value)) {
-      event.target.value = event.target.value.replace(/[+-]?([^0-9]*[.])?[^0-9]/g, "");
-
+      event.target.value = event.target.value.replace(/[^\d,.]*/g, '')
+          .replace(/^[^\d]*(\d+([.,]\d{0,5})?).*$/g, '$1')
+          .replace(/([,.])[,.]/g, '$1');
     }
   }
 

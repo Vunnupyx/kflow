@@ -1,77 +1,44 @@
-import {Component} from '@angular/core';
-import {NgFlowchartStepComponent} from '../../../../lib/ng-flowchart-step/ng-flowchart-step.component';
-import {IDropdownOptions} from './model/dropdown-option.interface';
-
-export interface IDropdownSettings {
-    enableSearchFiltering?: boolean;
-}
+import { Component, OnInit } from '@angular/core';
+import { NgFlowchartStepComponent } from '../../../../lib/ng-flowchart-step/ng-flowchart-step.component';
+import { IDropdownOptions } from './model/dropdown-option.interface';
 
 @Component({
     selector: 'lib-select-step',
     templateUrl: './select-step.component.html',
     styleUrls: ['./select-step.component.scss']
 })
-export class SelectStepComponent extends NgFlowchartStepComponent {
-    dropdownOptions: IDropdownOptions[] = [{
-        id: 1,
-        name: 'opt 1',
-        variables: [
-            {
-                id: 1,
-                name: '23'
-            },
-            {
-                id: 2,
-                name: '555'
-            }
-        ]
-    }];
-    // Selected Elem ID
-    selectedId = [];
-    selectedOption = '';
-    isInputEntered = false;
-    filterInput = '';
+export class SelectStepComponent extends NgFlowchartStepComponent implements OnInit {
+    dropdownOptions: IDropdownOptions[];
+    selectedOption: string;
     selectedListItem: IDropdownOptions[];
     showDropDown = false;
-    filterData: any;
-    private optionSettings: any;
 
-    get settings(): IDropdownSettings {
-        return this.optionSettings;
-    }
-
-    set settings(settings: IDropdownSettings) {
-        this.optionSettings = settings || {
-            enableSearchFiltering: false
-        };
+    ngOnInit(): void {
+        this.dropdownOptions = this.data.dropdownOptions;
+        this._selectFilteredData(this.data.selectedOption);
     }
 
     reset(event): void {
         this.selectedOption = '';
         this.showDropDown = false;
-        this.filterInput = '';
-        // event.stopPropagation();
+        event.stopPropagation();
     }
 
-    enableSearchFilter() {
-        return !this.settings.enableSearchFiltering || false;
-    }
-
-    isItemSelected(id: number): boolean {
+    isItemSelected(id: string): boolean {
         if (this.selectedListItem.length) {
             const selectedElem = this.selectedListItem.find((elem: IDropdownOptions) => elem.id === id);
-            return selectedElem ? true : false;
+            return !!selectedElem;
         } else {
             return false;
         }
 
     }
 
-    async displayCascader(item: IDropdownOptions, event) {
+    async displayCascade(item: IDropdownOptions, event) {
         const {variables, parentId} = item;
         if (!parentId) {
             this.selectedListItem = [];
-            this._setCascaderSt(this.dropdownOptions);
+            this._setCascadeSt(this.dropdownOptions);
         }
         if (variables && variables.length) {
             variables.showSubmenu = true;
@@ -80,38 +47,40 @@ export class SelectStepComponent extends NgFlowchartStepComponent {
             event.stopPropagation();
             this._setInputModel();
             this.showDropDown = false;
-            // this.selectOption.emit(this.selectedListItem);
             return;
         }
         this.selectedListItem.push({id: item.id, name: item.name});
         event.stopPropagation();
     }
 
-    displayDropdown(): void {
+    displayDropdown(event): void {
         this.showDropDown = !this.showDropDown;
         this.selectedListItem = [];
-        this._setCascaderSt(this.dropdownOptions);
+        this._setCascadeSt(this.dropdownOptions);
+        event.stopPropagation();
     }
 
-    onBlur(event) {
-        if (this.selectedListItem.length) {
-            this.showDropDown = false;
-        }
-    }
-
-    private _setInputModel() {
+    private _setInputModel(): void {
         const selectedListNames = this.selectedListItem.map((list: IDropdownOptions) => list.name);
         this.selectedOption = selectedListNames.toString().split(',').join('/');
+        this.data.selectedOption = this.selectedListItem;
     }
 
-    private _setCascaderSt(data: Array<IDropdownOptions>): void {
+    private _setCascadeSt(data: Array<IDropdownOptions>): void {
         data.map((elem: IDropdownOptions) => {
             const {id, variables} = elem;
             if (variables && variables.length) {
                 variables.showSubmenu = false;
                 variables.map((innerChildElem: IDropdownOptions) => innerChildElem.parentId = id);
-                this._setCascaderSt(variables);
+                this._setCascadeSt(variables);
             }
         });
+    }
+
+    private _selectFilteredData(data): void {
+        if (data) {
+            this.selectedListItem = data;
+            this._setInputModel();
+        }
     }
 }

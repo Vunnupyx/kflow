@@ -64,14 +64,14 @@ export class AppComponent {
   }
 };
 
-  varaibles = [
+  variables = [
     {
       id: 'constants',
-      name: 'Constants',
+      name: 'ConstantsConstantsConstantsConstants',
       variables: [
         {
           id: 'Id1',
-          name: 'Name 1',
+          name: 'Name 1ConstantsConstantsConstantsConstants',
         } as Variable,
         {
           id: 'Id2',

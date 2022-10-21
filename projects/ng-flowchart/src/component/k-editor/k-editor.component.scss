@@ -19,18 +19,35 @@ main {
 }
 
 #palette {
-    width: 300px;
-    padding: 16px;
+  width: 300px;
+  padding: 30px 16px;
 
-& .plugin-op {
-      padding: 12px;
-      user-select: none;
-      display: block;
+  & .plugin-op {
+    padding: 5px 12px;
+    user-select: none;
+    display: block;
 
-&:hover {
-     background: rgba(0, 0, 0, 0.04);
- }
-}
+    &__item {
+      display: flex;
+      justify-content: center;
+      padding: 1em;
+      width: fit-content;
+      background: white;
+      box-shadow: 0 4px 2em rgb(22 33 74 / 5%);
+      border-radius: 4px;
+      border: 1px solid gray;
+      cursor: pointer;
+
+      &_long {
+        width: 100%;
+      }
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.04);
+      }
+    }
+
+  }
 }
 
 section {
@@ -51,19 +68,20 @@ select {
 }
 
 .card {
-    padding: 1em;
-    background: white;
-    box-shadow: 0px 4px 2em rgba(22, 33, 74, 0.05);
-    border-radius: 4px;
-    min-width: 12em;
-    height: 4em;
+  display: flex;
+  padding: 1em;
+  background: white;
+  box-shadow: 0 4px 2em rgba(22, 33, 74, 0.05);
+  border-radius: 4px;
+  min-width: 4em;
+  height: 4em;
 }
 
 div#canvas[disabled="true"] {
-    opacity: .7;
+  opacity: .7;
 }
 
 div#canvas[disabled="true"] ::ng-deep.ngflowchart-step-wrapper {
-    opacity: .7;
+  opacity: .7;
 }
 

@@ -1,35 +1,29 @@
-<div #canvasContent class="select">
-    <button (click)="displayDropdown()" (focusout)="onBlur($event)" class="cascade-wrapper" placeholder="Select">
-    <span class="input-wrapper">
-      <span class="selected-option">{{selectedOption}}</span>
-      <input (keyup)="isInputEntered = true" [placeholder]="!selectedOption ? 'Select' : ''"
-             type="text"/>
-    </span>
-        <span (click)="reset($event)" *ngIf="selectedOption || isInputEntered" class="close">x</span>
-        <span class="caret caret-down"></span>
+<div #canvasContent (click)="destroy()" class="select">
+    <button (click)="displayDropdown($event)" class="cascade-wrapper">
+        <div class="input-wrapper">
+            <span class="selected-option">{{selectedOption ? selectedOption : 'Select'}}</span>
+        </div>
+        <span (click)="reset($event)" *ngIf="selectedOption" class="close">×</span>
+        <span *ngIf="!selectedOption" class="caret caret-down"></span>
     </button>
 
-    <div *ngIf="showDropDown && !filterInput" class="dropdown-wrapper">
+    <div *ngIf="showDropDown" class="dropdown-wrapper">
         <ul class="main-nav">
             <ng-container *ngTemplateOutlet="recursiveDropdownTmpl; context:{ list: dropdownOptions }"></ng-container>
         </ul>
         <ng-template #recursiveDropdownTmpl let-list="list">
-            <li (click)="displayCascader(option, $event)" *ngFor="let option of list"
-                [ngClass]="{'active' : isItemSelected(option?.id),'disable': option?.disable}" id="{{option?.id}}" tabIndex="1">
+            <li (click)="displayCascade(option, $event)" *ngFor="let option of list"
+                [ngClass]="{'active' : isItemSelected(option?.id),'disable': option?.disable}" id="{{option?.id}}"
+                tabIndex="1">
                 {{option?.name }}
                 <span *ngIf="option?.variables?.length"
-                      [ngClass]="isItemSelected(option?.id) ? 'active-caret-right' : 'caret-right'" class="caret"></span>
+                      [ngClass]="isItemSelected(option?.id) ? 'active-caret-right' : 'caret-right'"
+                      class="caret"></span>
                 <ul *ngIf="option?.variables?.length > 0 && option?.variables?.showSubmenu" class="submenu">
                     <ng-container
                             *ngTemplateOutlet="recursiveDropdownTmpl; context:{ list: option.variables }"></ng-container>
                 </ul>
             </li>
         </ng-template>
-
     </div>
-    <!--
-    &lt;!&ndash; Template if filtering is enabled and user serach for an item &ndash;&gt;
-    <ng-container *ngIf="isInputEntered && filterInput">
-        <ngx-list-filter (selectOption) = "selectFilteredData($event)" [filterData]="filterData" [searchInput] = "filterInput"></ngx-list-filter>
-    </ng-container>-->
 </div>

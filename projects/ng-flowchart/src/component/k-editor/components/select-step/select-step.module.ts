@@ -1,18 +1,13 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {SelectStepComponent} from './select-step.component';
-import {FilterPipe} from './filter.pipe';
-import {FormsModule} from '@angular/forms';
-import {ListFilterComponent} from './list-filter/list-filter.component';
-
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SelectStepComponent } from './select-step.component';
 
 @NgModule({
-    declarations: [SelectStepComponent, FilterPipe, ListFilterComponent],
+    declarations: [SelectStepComponent],
     imports: [
         CommonModule,
-        FormsModule
     ],
-    exports: [SelectStepComponent, FilterPipe, ListFilterComponent]
+    exports: [SelectStepComponent]
 })
 export class SelectStepModule {
 }

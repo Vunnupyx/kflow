@@ -17,14 +17,18 @@
           data: item.data
         }"
             >
-                <img src="assets/images/icons/{{item.data.icon.name}}" alt="">
+                <div class="plugin-op__item">
+                    <img alt="" src="assets/images/icons/{{item.data.icon.name}}">
+                </div>
             </div>
             <div
                     class="plugin-op"
                     *ngFor="let op of customOps"
                     [ngFlowchartStep]="op.step"
             >
-                <span>{{ op.paletteName }}</span>
+                <div class="plugin-op__item plugin-op__item_long">
+                    <span>{{ op.paletteName }}</span>
+                </div>
             </div>
         </section>
         <section>

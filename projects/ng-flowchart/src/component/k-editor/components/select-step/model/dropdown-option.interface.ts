@@ -1,6 +1,6 @@
 export interface IDropdownOptions {
-    id?: number;
+    id?: string;
     name?: string;
     variables?;
-    parentId?: number;
+    parentId?: string;
 }

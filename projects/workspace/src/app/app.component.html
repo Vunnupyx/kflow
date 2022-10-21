@@ -2,6 +2,6 @@
 <button (click)="visibleInstanceIndex = 1">Instance #2</button>
 <button (click)="visibleInstanceIndex = 2">Instance #3</button>
 
-<k-editor *ngIf="visibleInstanceIndex === 0" [value]="dataBucket[0] || sampleJson" (valueChange)="onValueChange(0, $event)"></k-editor>
-<k-editor *ngIf="visibleInstanceIndex === 1" [value]="dataBucket[1] || sampleJson" (valueChange)="onValueChange(1, $event)"></k-editor>
-<k-editor *ngIf="visibleInstanceIndex === 2" [value]="dataBucket[2] || sampleJson" (valueChange)="onValueChange(2, $event)"></k-editor>
+<k-editor *ngIf="visibleInstanceIndex === 0" [value]="dataBucket[0] || sampleJson" [variables]="variables" (valueChange)="onValueChange(0, $event)"></k-editor>
+<k-editor *ngIf="visibleInstanceIndex === 1" [value]="dataBucket[1] || sampleJson" [variables]="variables" (valueChange)="onValueChange(1, $event)"></k-editor>
+<k-editor *ngIf="visibleInstanceIndex === 2" [value]="dataBucket[2] || sampleJson" [variables]="variables" (valueChange)="onValueChange(2, $event)"></k-editor>
