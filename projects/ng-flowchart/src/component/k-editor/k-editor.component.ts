@@ -94,6 +94,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     this.callbacks.onDropError = (x) => this.onDropError(x);
     this.callbacks.onMoveError = (x) => this.onMoveError(x);
     this.callbacks.onDropStep = () => this.onDropStep();
+    this.callbacks.onChangeStep = () => this.onChangeStep();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -136,6 +137,10 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
         }
       },
     ];
+  }
+
+  onChangeStep() {
+    this._emitValueChange();
   }
 
   onDropStep() {
@@ -181,7 +186,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     await this.canvas.getFlow().upload(value);
   }
 
-  _emitValueChange() {
+  private _emitValueChange() {
     this.valueChange.emit(this.canvas.getFlow().toObject());
   }
 

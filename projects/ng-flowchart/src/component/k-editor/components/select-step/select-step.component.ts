@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgFlowchartStepComponent } from '../../../../lib/ng-flowchart-step/ng-flowchart-step.component';
 import { IDropdownOptions } from './model/dropdown-option.interface';
 
@@ -46,6 +46,7 @@ export class SelectStepComponent extends NgFlowchartStepComponent implements OnI
             this.selectedListItem.push({id: item.id, name: item.name});
             event.stopPropagation();
             this._setInputModel();
+            this.canvas.options.callbacks.onChangeStep();
             this.showDropDown = false;
             return;
         }

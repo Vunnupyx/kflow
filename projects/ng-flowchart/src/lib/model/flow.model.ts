@@ -149,6 +149,10 @@ export namespace NgFlowchart {
 
   export type Callbacks = {
     /**
+     * Called when user change step from the palette
+     */
+    onChangeStep?: () => void;
+    /**
      * Called when user drops a new step from the palette or moves an existing step
      */
     onDropStep?: (drop: DropEvent) => void;
