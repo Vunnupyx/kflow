@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { NgFlowchartStepComponent } from '../../../../lib/ng-flowchart-step/ng-flowchart-step.component';
 import { IDropdownOptions } from './model/dropdown-option.interface';
 
@@ -41,7 +41,7 @@ export class SelectStepComponent extends NgFlowchartStepComponent implements OnI
             this._setCascadeSt(this.dropdownOptions);
         }
         if (variables && variables.length) {
-            variables.showSubmenu = true;
+            item.showSubmenu = true;
         } else {
             this.selectedListItem.push({id: item.id, name: item.name});
             event.stopPropagation();
@@ -70,7 +70,7 @@ export class SelectStepComponent extends NgFlowchartStepComponent implements OnI
         data.map((elem: IDropdownOptions) => {
             const {id, variables} = elem;
             if (variables && variables.length) {
-                variables.showSubmenu = false;
+                elem.showSubmenu = false;
                 variables.map((innerChildElem: IDropdownOptions) => innerChildElem.parentId = id);
                 this._setCascadeSt(variables);
             }

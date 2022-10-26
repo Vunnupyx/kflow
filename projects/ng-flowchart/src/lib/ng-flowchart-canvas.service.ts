@@ -384,8 +384,8 @@ export class NgFlowchartCanvasService {
     if (newParent) {
       //we want to remove child and insert our newStep at the same index
       let index = newParent.removeChild(childStep);
-      newStep.zaddChild0(childStep);
       newParent.zaddChild0(newStep);
+      newStep.zaddChild0(childStep);
     } else {
       // new root node
       newStep.parent?.removeChild(newStep);

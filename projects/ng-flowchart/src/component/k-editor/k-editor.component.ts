@@ -32,7 +32,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
   items = [
     {
       name: 'Logger',
-      type: 'log',
+      type: 'plus',
       data: {
         name: 'Log',
         icon: { name: 'plus.svg', color: 'blue' },
@@ -44,7 +44,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     },
     {
       name: 'Logger',
-      type: 'log',
+      type: 'minus',
       data: {
         name: 'Log',
         icon: { name: 'minus.svg', color: 'blue' },
@@ -56,7 +56,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     },
     {
       name: 'Logger',
-      type: 'log',
+      type: 'cross',
       data: {
         name: 'Log',
         icon: { name: 'cross.svg', color: 'blue' },
@@ -68,7 +68,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     },
     {
       name: 'Logger',
-      type: 'log',
+      type: 'divide',
       data: {
         name: 'Log',
         icon: { name: 'divide.svg', color: 'blue' },
@@ -103,7 +103,10 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.stepRegistry.registerStep('log', this.normalStepTemplate);
+    this.stepRegistry.registerStep('plus', this.normalStepTemplate);
+    this.stepRegistry.registerStep('minus', this.normalStepTemplate);
+    this.stepRegistry.registerStep('cross', this.normalStepTemplate);
+    this.stepRegistry.registerStep('divide', this.normalStepTemplate);
     this.stepRegistry.registerStep('numeric', NumericStepComponent);
     this.stepRegistry.registerStep('select', SelectStepComponent);
 
@@ -178,7 +181,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     await this.canvas.getFlow().upload(value);
   }
 
-  private _emitValueChange() {
+  _emitValueChange() {
     this.valueChange.emit(this.canvas.getFlow().toObject());
   }
 

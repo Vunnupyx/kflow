@@ -19,7 +19,7 @@
                 <span *ngIf="option?.variables?.length"
                       [ngClass]="isItemSelected(option?.id) ? 'active-caret-right' : 'caret-right'"
                       class="caret"></span>
-                <ul *ngIf="option?.variables?.length > 0 && option?.variables?.showSubmenu" class="submenu">
+                <ul *ngIf="option?.variables?.length > 0 && option?.showSubmenu" class="submenu">
                     <ng-container
                             *ngTemplateOutlet="recursiveDropdownTmpl; context:{ list: option.variables }"></ng-container>
                 </ul>

@@ -14,7 +14,7 @@ export class AppComponent {
   sampleJson = {
   "root": {
     "id": "s1624206177187",
-    "type": "log",
+    "type": "cross",
     "data": {
       "name": "Log",
       "icon": {
@@ -29,7 +29,7 @@ export class AppComponent {
     "children": [
       {
         "id": "s1624206178618",
-        "type": "log",
+        "type": "minus",
         "data": {
           "name": "Log",
           "icon": {
@@ -44,7 +44,7 @@ export class AppComponent {
         "children": [
           {
             "id": "s1624206180286",
-            "type": "log",
+            "type": "plus",
             "data": {
               "name": "Log",
               "icon": {
@@ -67,11 +67,11 @@ export class AppComponent {
   variables = [
     {
       id: 'constants',
-      name: 'ConstantsConstantsConstantsConstants',
+      name: 'Constants',
       variables: [
         {
           id: 'Id1',
-          name: 'Name 1ConstantsConstantsConstantsConstants',
+          name: 'Name 1',
         } as Variable,
         {
           id: 'Id2',

@@ -39,7 +39,7 @@ export class NgFlowchartStepComponent<T = any> {
     }
   }
 
-  @HostListener('dragend', ['$event'])
+  @HostListener('drop', ['$event'])
   onMoveEnd(event: DragEvent) {
     this.showTree();
   }
