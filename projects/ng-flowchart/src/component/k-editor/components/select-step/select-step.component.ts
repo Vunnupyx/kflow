@@ -46,7 +46,7 @@ export class SelectStepComponent extends NgFlowchartStepComponent implements OnI
             this.selectedListItem.push({id: item.id, name: item.name});
             event.stopPropagation();
             this._setInputModel();
-            this.canvas.options.callbacks.onChangeStep();
+            this.setData({...this.data, selectedOption: this.selectedListItem});
             this.showDropDown = false;
             return;
         }
@@ -64,7 +64,6 @@ export class SelectStepComponent extends NgFlowchartStepComponent implements OnI
     private _setInputModel(): void {
         const selectedListNames = this.selectedListItem.map((list: IDropdownOptions) => list.name);
         this.selectedOption = selectedListNames.toString().split(',').join('/');
-        this.data.selectedOption = this.selectedListItem;
     }
 
     private _setCascadeSt(data: Array<IDropdownOptions>): void {

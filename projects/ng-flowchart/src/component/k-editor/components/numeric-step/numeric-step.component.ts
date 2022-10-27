@@ -17,8 +17,7 @@ export class NumericStepComponent extends NgFlowchartStepComponent {
     if (!Number(value)) {
       return;
     }
-    this.data = value;
-    this.canvas.options.callbacks.onChangeStep();
+    this.setData(value);
   }
 
   public inputValidator(event: any): void {

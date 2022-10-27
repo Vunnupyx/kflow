@@ -107,6 +107,11 @@ export class NgFlowchartStepComponent<T = any> {
     return ['BELOW', 'LEFT', 'RIGHT', 'ABOVE'];
   }
 
+  setData(data: T): void {
+    this.data = data;
+    this.canvas.options.callbacks.onChangeStep();
+  }
+
   ngOnInit(): void {
 
   }
