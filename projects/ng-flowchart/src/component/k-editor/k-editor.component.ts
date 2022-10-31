@@ -5,6 +5,7 @@ import { NgFlowchartCanvasDirective } from '../../lib/ng-flowchart-canvas.direct
 import { VariableGroup } from '../../models';
 import { NumericStepComponent } from './components/numeric-step/numeric-step.component';
 import { SelectStepComponent } from './components/select-step/select-step.component';
+import {NestedFlowComponent} from './components/nested-flow/nested-flow.component';
 
 @Component({
   selector: 'k-editor',
@@ -95,6 +96,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     this.callbacks.onMoveError = (x) => this.onMoveError(x);
     this.callbacks.onDropStep = () => this.onDropStep();
     this.callbacks.onChangeStep = () => this.onChangeStep();
+    this.callbacks.afterDeleteStep = () => this.onDeleteStep();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -110,6 +112,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     this.stepRegistry.registerStep('divide', this.normalStepTemplate);
     this.stepRegistry.registerStep('numeric', NumericStepComponent);
     this.stepRegistry.registerStep('select', SelectStepComponent);
+    this.stepRegistry.registerStep('nested', NestedFlowComponent);
 
     this._renderValue(this.value);
     this.changeDetectorRef.detectChanges();
@@ -136,6 +139,16 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
           }
         }
       },
+      {
+        paletteName: 'Group',
+        step: {
+          template: NestedFlowComponent,
+          type: 'nested',
+          data: {
+            name: 'Nested Flow'
+          }
+        }
+      },
     ];
   }
 
@@ -144,6 +157,10 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
   }
 
   onDropStep() {
+    this._emitValueChange();
+  }
+
+  onDeleteStep() {
     this._emitValueChange();
   }
 
@@ -174,11 +191,6 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     };
   }
 
-  onDelete(id) {
-    this.canvas.getFlow().getStep(id).destroy(true);
-    this._emitValueChange();
-  }
-
   private async _renderValue(value: object) {
     if (!this.canvas) {
       return;
@@ -187,7 +199,8 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
   }
 
   private _emitValueChange() {
-    this.valueChange.emit(this.canvas.getFlow().toObject());
+    const value = this.canvas.getFlow().toObject();
+    this.valueChange.emit(value);
   }
 
 }

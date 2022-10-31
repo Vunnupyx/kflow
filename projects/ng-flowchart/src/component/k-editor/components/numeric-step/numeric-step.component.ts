@@ -8,10 +8,6 @@ import { NgFlowchartStepComponent } from 'projects/ng-flowchart/src/lib/ng-flowc
 })
 export class NumericStepComponent extends NgFlowchartStepComponent {
 
-  delete(): void {
-    this.destroy(true);
-  }
-
   onChangeNumeric(event: any): void {
     const value = (event.target.value || '').trim();
     if (!Number(value)) {

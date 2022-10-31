@@ -138,6 +138,13 @@ export class NgFlowchartStepComponent<T = any> {
     this.canvas.options.callbacks.onChangeStep();
   }
 
+  delete() {
+    this.destroy(true);
+    this.canvas.options.callbacks.afterDeleteStep &&
+    this.canvas.options.callbacks.afterDeleteStep(this);
+  }
+
+
   ngOnInit(): void {
 
   }
@@ -214,9 +221,6 @@ export class NgFlowchartStepComponent<T = any> {
       this.destroy0(parentIndex, recursive);
 
       this.canvas.reRender();
-
-      this.canvas.options.callbacks.afterDeleteStep && 
-      this.canvas.options.callbacks.afterDeleteStep(this)
 
       return true;
     }

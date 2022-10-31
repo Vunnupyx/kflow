@@ -1,4 +1,4 @@
-<div #canvasContent [id]="id">
+<div #canvasContent [id]="id" (click)="delete()">
   <ng-container
     *ngTemplateOutlet="
       contentTemplate;
