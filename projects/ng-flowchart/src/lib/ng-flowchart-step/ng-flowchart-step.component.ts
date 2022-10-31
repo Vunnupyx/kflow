@@ -40,6 +40,11 @@ export class NgFlowchartStepComponent<T = any> {
   }
 
   @HostListener('drop', ['$event'])
+  onDropEnd(event: DragEvent) {
+    this.showTree();
+  }
+
+  @HostListener('dragend', ['$event'])
   onMoveEnd(event: DragEvent) {
     this.showTree();
   }
@@ -93,8 +98,19 @@ export class NgFlowchartStepComponent<T = any> {
     return true;
   }
 
-  canDrop(dropEvent: NgFlowchart.DropTarget, error: NgFlowchart.ErrorMessage): boolean {
-    return true;
+  canDrop(stepToDrop: NgFlowchartStepComponent | NgFlowchart.Step, position: string): boolean {
+    if (stepToDrop && this) {
+      const hasArithmeticOperatorStep = this._equalsArithmeticOperators(stepToDrop);
+      if (!hasArithmeticOperatorStep || !this._equalsArithmeticOperators(this)) {
+        if (position === 'RIGHT' && this.children[0]) {
+          return !hasArithmeticOperatorStep || !this._equalsArithmeticOperators(this.children[0]);
+        } else if (position === 'LEFT' && this.parent) {
+          return !hasArithmeticOperatorStep || !this._equalsArithmeticOperators(this.parent);
+        }
+        return true;
+      }
+    }
+    return false;
   }
 
   shouldEvalDropHover(coords: number[], stepToDrop: NgFlowchart.Step): boolean {
@@ -102,6 +118,16 @@ export class NgFlowchartStepComponent<T = any> {
   }
 
   async onUpload(data: T) { }
+
+  private _equalsArithmeticOperators(step: NgFlowchartStepComponent | NgFlowchart.Step): boolean {
+    const operatorsType = ['minus', 'plus', 'cross', 'divide'];
+    for (let operatorType of operatorsType) {
+      if (operatorType === step.type) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   getDropPositionsForStep(step: NgFlowchart.Step): NgFlowchart.DropPosition[] {
     return ['BELOW', 'LEFT', 'RIGHT', 'ABOVE'];

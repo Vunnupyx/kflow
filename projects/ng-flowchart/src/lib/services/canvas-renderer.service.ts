@@ -293,7 +293,9 @@ export class CanvasRendererService {
                 }
                 //if this step is closer than previous best match then we have a new best
                 else if (bestMatch == null || bestMatch.proximity > position.proximity) {
-                    bestMatch = position;
+                    if (step.canDrop(dragStep, position.position)) {
+                        bestMatch = position;
+                    }
                 }
             }
         }

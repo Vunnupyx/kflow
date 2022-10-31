@@ -14,26 +14,16 @@ export class AppComponent {
   sampleJson = {
   "root": {
     "id": "s1624206177187",
-    "type": "cross",
-    "data": {
-      "name": "Log",
-      "icon": {
-        "name": "cross.svg",
-        "color": "blue"
-      },
-      "config": {
-        "message": null,
-        "severity": null
-      }
-    },
+    "type": "numeric",
+    "data": 2,
     "children": [
       {
         "id": "s1624206178618",
-        "type": "minus",
+        "type": "cross",
         "data": {
           "name": "Log",
           "icon": {
-            "name": "minus.svg",
+            "name": "cross.svg",
             "color": "blue"
           },
           "config": {
@@ -44,18 +34,8 @@ export class AppComponent {
         "children": [
           {
             "id": "s1624206180286",
-            "type": "plus",
-            "data": {
-              "name": "Log",
-              "icon": {
-                "name": "plus.svg",
-                "color": "blue"
-              },
-              "config": {
-                "message": null,
-                "severity": null
-              }
-            },
+            "type": "numeric",
+            "data": 2,
             "children": []
           }
         ]
