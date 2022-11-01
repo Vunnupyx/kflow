@@ -5,7 +5,8 @@ import { NgFlowchartModule } from '../../lib/ng-flowchart.module';
 import { FormsModule } from '@angular/forms';
 import { NumericStepComponent } from './components/numeric-step/numeric-step.component';
 import { SelectStepModule } from './components/select-step/select-step.module';
-import { NestedFlowComponent } from './components/nested-flow/nested-flow.component';
+import {NestedFlowComponent} from './components/nested-flow/nested-flow.component';
+import { SerializerModule } from './service/serializer.module';
 
 
 
@@ -19,7 +20,9 @@ import { NestedFlowComponent } from './components/nested-flow/nested-flow.compon
     CommonModule,
     NgFlowchartModule,
     FormsModule,
-    SelectStepModule
+    SelectStepModule,
+
+    SerializerModule
   ],
   exports: [KEditorComponent]
 })
