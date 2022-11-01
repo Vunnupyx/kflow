@@ -305,23 +305,23 @@ export class NgFlowchartStepComponent<T = any> {
   }
 
   /**
-   * Returns the total width extent (in pixels) of this node tree
+   * Returns the total height extent (in pixels) of this node tree
    * @param stepGap The current step gap for the flow canvas
    */
-  getNodeTreeWidth(stepGap: number) {
-    const currentNodeWidth = this.nativeElement.getBoundingClientRect().width;
+  getNodeTreeHeight(stepGap: number) {
+    const currentNodeHeight = this.nativeElement.getBoundingClientRect().height;
 
     if (!this.hasChildren()) {
-      return this.nativeElement.getBoundingClientRect().width;
+      return this.nativeElement.getBoundingClientRect().height;
     }
 
     let childWidth = this._children.reduce((childTreeWidth, child) => {
-      return childTreeWidth += child.getNodeTreeWidth(stepGap);
+      return childTreeWidth += child.getNodeTreeHeight(stepGap);
     }, 0)
 
     childWidth += stepGap * (this._children.length - 1);
 
-    return Math.max(currentNodeWidth, childWidth);
+    return Math.max(currentNodeHeight, childWidth);
   }
 
   /**

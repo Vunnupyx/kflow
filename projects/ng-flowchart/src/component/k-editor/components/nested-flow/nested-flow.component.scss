@@ -5,11 +5,19 @@
     flex-direction: column;
     border-radius: 4px;
     padding: 1em;
-    min-width: 300px;
-    min-height: 300px;
+    min-width: 304px;
+    min-height: 125px;
 
     &.nested-alt {
         background: #f0f0f0;
+    }
+
+    & .dialog-close {
+        font-family: none, serif;
+        font-size: 36px;
+        line-height: 18px;
+        cursor: pointer;
+        margin: 0 0 10px auto;
     }
 }
 

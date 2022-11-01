@@ -65,7 +65,7 @@ export class CanvasRendererService {
         let totalTreeHeight = 0;
 
         rootNode.children.forEach(child => {
-            let totalChildHeight = child.getNodeTreeWidth(this.getStepGap());
+            let totalChildHeight = child.getNodeTreeHeight(this.getStepGap());
             totalChildHeight = totalChildHeight / this.scale
             childTreeHeights[child.nativeElement.id] = totalChildHeight;
 
@@ -264,7 +264,7 @@ export class CanvasRendererService {
         let totalTreeWidth = 0;
         const rootWidth = flow.rootStep.getCurrentRect().width / this.scale;
         flow.rootStep.children.forEach(child => {
-            let totalChildWidth = child.getNodeTreeWidth(this.getStepGap());
+            let totalChildWidth = child.getNodeTreeHeight(this.getStepGap());
             totalTreeWidth += totalChildWidth / this.scale;
         });
         totalTreeWidth += (flow.rootStep.children.length - 1) * this.getStepGap();
