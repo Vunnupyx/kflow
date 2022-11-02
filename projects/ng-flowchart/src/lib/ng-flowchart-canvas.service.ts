@@ -316,6 +316,9 @@ export class NgFlowchartCanvasService {
       case 'RIGHT':
         response = this.placeStepRight(step, dropTarget.step);
         break;
+      case 'CENTER':
+        response = this.placeStepReplace(step, dropTarget.step);
+        break;
       default:
         break;
     }
@@ -324,6 +327,28 @@ export class NgFlowchartCanvasService {
       this.flow.addStep(step);
     }
     return response;
+  }
+
+  private placeStepReplace(
+      newStep: NgFlowchartStepComponent,
+      lostStep: NgFlowchartStepComponent
+  ): DropResponse {
+    let newParent = lostStep.parent;
+    if (newParent) {
+      newParent.removeChild(lostStep);
+      newParent.zaddChild0(newStep);
+    } else {
+      newStep.parent?.removeChild(newStep);
+      newStep.setParent(null, true);
+      lostStep.removeChild(newStep);
+      this.setRoot(newStep);
+    }
+    lostStep.children?.map(item => newStep.zaddChild0(item));
+    lostStep.destroy();
+    return {
+      added: true,
+      prettyRender: false,
+    };
   }
 
   private placeStepRight(

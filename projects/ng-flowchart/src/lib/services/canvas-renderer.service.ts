@@ -175,14 +175,19 @@ export class CanvasRendererService {
                 result = 'deadzone';
             }
 
-            if (absYDistance > absXDistance && !targetStep.isRootElement() && this.options.options.allowMultipleChildNodes) {
+            if (this.equalsArithmeticOperators(targetStep) && this.equalsArithmeticOperators(stepToDrop)) {
+                result = {
+                    step: targetStep,
+                    position: 'CENTER',
+                    proximity: absYDistance
+                };
+            } else if (absYDistance > absXDistance && !targetStep.isRootElement() && this.options.options.allowMultipleChildNodes) {
                 result = {
                     step: targetStep,
                     position: yDiff > 0 ? 'BELOW' : 'ABOVE',
                     proximity: absYDistance
                 };
-            }
-            else {
+            } else {
                 result = {
                     step: targetStep,
                     position: xDiff > 0 ? 'RIGHT' : 'LEFT',
@@ -199,6 +204,29 @@ export class CanvasRendererService {
         }
 
         return result;
+    }
+
+    private isDropAcceptable(targetStep: NgFlowchartStepComponent, stepToDrop: NgFlowchartStepComponent | NgFlowchart.Step, position: string): boolean {
+        if (stepToDrop && this) {
+            const hasArithmeticOperatorStep = this.equalsArithmeticOperators(stepToDrop);
+            if (position === 'RIGHT' && targetStep.children[0]) {
+                return !hasArithmeticOperatorStep || !this.equalsArithmeticOperators(targetStep.children[0]);
+            } else if (position === 'LEFT' && targetStep.parent) {
+                return !hasArithmeticOperatorStep || !this.equalsArithmeticOperators(targetStep.parent);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private equalsArithmeticOperators(step: NgFlowchartStepComponent | NgFlowchart.Step): boolean {
+        const operatorsType = ['minus', 'plus', 'cross', 'divide'];
+        for (let operatorType of operatorsType) {
+            if (operatorType === step.type) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private adjustDimensions(flow: CanvasFlow, canvasRect: DOMRect): void {
@@ -302,7 +330,7 @@ export class CanvasRendererService {
                 }
                 //if this step is closer than previous best match then we have a new best
                 else if (bestMatch == null || bestMatch.proximity > position.proximity) {
-                    if (step.canDrop(dragStep, position.position)) {
+                    if (this.isDropAcceptable(step, dragStep, position.position)) {
                         bestMatch = position;
                     }
                 }

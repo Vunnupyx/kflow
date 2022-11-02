@@ -145,7 +145,7 @@ export namespace NgFlowchart {
   };
 
   export type DropStatus = 'SUCCESS' | 'PENDING' | 'FAILED';
-  export type DropPosition = 'RIGHT' | 'LEFT' | 'BELOW' | 'ABOVE';
+  export type DropPosition = 'RIGHT' | 'LEFT' | 'BELOW' | 'ABOVE' | 'CENTER';
 
   export type Callbacks = {
     /**
