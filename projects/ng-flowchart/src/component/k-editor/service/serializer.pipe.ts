@@ -1,52 +1,54 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'serializer'
 })
 export class SerializerPipe implements PipeTransform {
-  private amount: string = '';
+  private outerModel: string;
 
-  transform(value: any, args?: any): any {
-    this.amount = '';
-    if (!value) {
-      return [];
+  transform(value: any): string {
+    this.outerModel = '';
+    if (!value || !value.root) {
+      return this.outerModel;
     }
-
-    return this.parsedChildTree(value.root);
+    return this.serializeChildTree(value.root);
   }
 
-  parsedChildTree(rootNode) {
+  serializeChildTree(rootNode: any): string {
     if (rootNode.type === 'plus') {
-      this.amount += ' +';
+      this.outerModel += '+';
     }
     if (rootNode.type === 'minus') {
-      this.amount += ' -';
+      this.outerModel += '-';
     }
     if (rootNode.type === 'cross') {
-      this.amount += ' *';
+      this.outerModel += '*';
     }
     if (rootNode.type === 'divide') {
-      this.amount += ' /';
+      this.outerModel += '/';
     }
-    if (rootNode.type === 'numeric') {
-      this.amount += ' ' + rootNode.data;
+    if (rootNode.type === 'numeric' && rootNode.data) {
+      this.outerModel += rootNode.data;
     }
-    if (rootNode.type === 'select') {
-      this.amount += ' ' + rootNode.data.selectedOption.map(item => item.name);
+    if (rootNode.type === 'select' && rootNode.data.selectedOption) {
+      this.outerModel += rootNode.data.selectedOption.map(item => item.name);
     }
-    if (rootNode.type === 'nested') {
-      rootNode.data.nested.root && this.parsedChildTree(rootNode.data.nested.root);
+    if (rootNode.type === 'nested' && rootNode.data.nested.root) {
+        this.outerModel += '(';
+        this.serializeChildTree(rootNode.data.nested.root);
+        this.outerModel += ')';
     }
     if (!this._hasChildren(rootNode)) {
-      return;
+      return this.outerModel;
     }
+    this.outerModel += ' ';
     rootNode.children.forEach(child => {
-      this.parsedChildTree(child);
+      this.serializeChildTree(child);
     });
-    return this.amount;
+    return this.outerModel;
   }
 
   private _hasChildren(root: any) {
-    return root.children && root.children.length > 0;
+    return root.children && root.children.length;
   }
 }

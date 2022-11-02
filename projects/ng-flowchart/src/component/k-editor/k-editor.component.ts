@@ -5,8 +5,7 @@ import { NgFlowchartCanvasDirective } from '../../lib/ng-flowchart-canvas.direct
 import { VariableGroup } from '../../models';
 import { NumericStepComponent } from './components/numeric-step/numeric-step.component';
 import { SelectStepComponent } from './components/select-step/select-step.component';
-import {NestedFlowComponent} from './components/nested-flow/nested-flow.component';
-import {SerializerPipe} from './service/serializer.pipe';
+import { NestedFlowComponent } from './components/nested-flow/nested-flow.component';
 
 @Component({
   selector: 'k-editor',
@@ -92,7 +91,6 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
   constructor(
     private stepRegistry: NgFlowchartStepRegistry,
     private changeDetectorRef: ChangeDetectorRef,
-    private utilitySerializerPipe: SerializerPipe
   ) {
     this.callbacks.onDropError = (x) => this.onDropError(x);
     this.callbacks.onMoveError = (x) => this.onMoveError(x);
@@ -201,9 +199,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
   }
 
   private _emitValueChange() {
-    const value = this.canvas.getFlow().toObject();
-    console.log(this.utilitySerializerPipe.transform(value));
-    this.valueChange.emit(value);
+    this.valueChange.emit(this.canvas.getFlow().toObject());
   }
 
 }

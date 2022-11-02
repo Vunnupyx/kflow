@@ -241,7 +241,7 @@ export class CanvasRendererService {
             }
         }
         
-        const heightBorderGap = 50;
+        const heightBorderGap = 30;
         const heightDiff = canvasRect.height - (maxBottom - canvasRect.top);
         if (heightDiff < heightBorderGap) {
             let growHeight = heightBorderGap;
@@ -249,13 +249,22 @@ export class CanvasRendererService {
                 growHeight += Math.abs(heightDiff);
             }
             this.getCanvasContentElement().style.minHeight = `${canvasRect.height + growHeight}px`;
+            if (this.options.options.centerOnResize) {
+                this.render(flow, true, true);
+            }
         } else if(heightDiff > heightBorderGap){
             if(this.isNestedCanvas()) {
                 let shrinkHeight = heightDiff - heightBorderGap;
                 this.getCanvasContentElement().style.minHeight = `${canvasRect.height - shrinkHeight}px`;
+                if (this.options.options.centerOnResize) {
+                    this.render(flow, true, true);
+                }
             } else if(this.getCanvasContentElement().style.minHeight) {
                 // reset normal canvas height if auto height set
                 this.getCanvasContentElement().style.minHeight = null;
+                if (this.options.options.centerOnResize) {
+                    this.render(flow, true, true);
+                }
             }
         }
     }
