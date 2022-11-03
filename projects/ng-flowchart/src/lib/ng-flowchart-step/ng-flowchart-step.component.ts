@@ -118,7 +118,7 @@ export class NgFlowchartStepComponent<T = any> {
   }
 
   delete() {
-    this.destroy(true);
+    this.destroy(false);
     this.canvas.options.callbacks.afterDeleteStep &&
     this.canvas.options.callbacks.afterDeleteStep(this);
   }
