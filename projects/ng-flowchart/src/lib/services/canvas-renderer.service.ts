@@ -254,9 +254,9 @@ export class CanvasRendererService {
                 this.render(flow, true, true);
             }
         } else if(widthDiff > widthBorderGap) {
-            var totalTreeWidth = this.getTotalTreeWidth(flow);
+            let totalTreeWidth = widthDiff - widthBorderGap;
             if(this.isNestedCanvas()) {
-                this.getCanvasContentElement().style.minWidth = `${totalTreeWidth + widthBorderGap}px`;
+                this.getCanvasContentElement().style.minWidth = `${canvasRect.width - totalTreeWidth}px`;
                 if (this.options.options.centerOnResize) {
                     this.render(flow, true, true);
                 }
@@ -295,18 +295,6 @@ export class CanvasRendererService {
                 }
             }
         }
-    }
-
-    private getTotalTreeWidth(flow: CanvasFlow): number {
-        let totalTreeWidth = 0;
-        const rootWidth = flow.rootStep.getCurrentRect().width / this.scale;
-        flow.rootStep.children.forEach(child => {
-            let totalChildWidth = child.getNodeTreeHeight(this.getStepGap());
-            totalTreeWidth += totalChildWidth / this.scale;
-        });
-        totalTreeWidth += (flow.rootStep.children.length - 1) * this.getStepGap();
-        // total tree width doesn't give root width
-        return Math.max(totalTreeWidth, rootWidth);
     }
 
     private findBestMatchForSteps(dragStep: NgFlowchart.Step, event: DragEvent, steps: ReadonlyArray<NgFlowchartStepComponent>): DropProximity | null {

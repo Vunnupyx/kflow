@@ -23,6 +23,7 @@
 
 .nested-canvas-content {
     width: 100%;
+    overflow: visible;
     flex: 1 0 100%;
     display: flex;
     background-size: 30px 30px;
