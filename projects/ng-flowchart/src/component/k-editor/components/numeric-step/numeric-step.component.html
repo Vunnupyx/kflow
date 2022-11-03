@@ -1,5 +1,6 @@
-<div #canvasContent (click)="delete()" class="numeric">
-    <div (click)="$event.stopPropagation()" class="numeric__input-wrap">
+<div #canvasContent class="numeric">
+    <div class="dialog-close" (click)="delete()">×</div>
+    <div class="numeric__input-wrap">
         <input (change)="onChangeNumeric($event)" (input)="inputValidator($event)" [(ngModel)]="data"
                class="numeric__input" type="text">
     </div>

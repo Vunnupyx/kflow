@@ -73,6 +73,9 @@
                     [attr.name]="data.data.name"
                     #card
             >
+                <div (click)="this.delete(data.id)"
+                     class="dialog-close">×
+                </div>
                 <img src="assets/images/icons/{{data.data.icon.name}}" alt="">
             </div>
         </ng-template>

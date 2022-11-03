@@ -75,6 +75,10 @@ select {
   border-radius: 4px;
   min-width: 4em;
   height: 4em;
+
+  &:hover .dialog-close {
+    display: block;
+  }
 }
 
 div#canvas[disabled="true"] {
@@ -85,3 +89,14 @@ div#canvas[disabled="true"] ::ng-deep.ngflowchart-step-wrapper {
   opacity: .7;
 }
 
+::ng-deep .dialog-close {
+  font-family: none, serif;
+  font-size: 26px;
+  line-height: 13px;
+  cursor: pointer;
+  display: none;
+  padding: 3px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}

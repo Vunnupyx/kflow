@@ -58,7 +58,6 @@ export class SelectStepComponent extends NgFlowchartStepComponent implements OnI
         this.showDropDown = !this.showDropDown;
         this.selectedListItem = [];
         this._setCascadeSt(this.dropdownOptions);
-        event.stopPropagation();
     }
 
     private _setInputModel(): void {

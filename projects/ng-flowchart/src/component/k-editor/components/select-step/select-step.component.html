@@ -1,4 +1,5 @@
-<div #canvasContent (click)="delete()" class="select">
+<div #canvasContent class="select">
+    <div class="dialog-close" (click)="delete()">×</div>
     <button (click)="displayDropdown($event)" class="cascade-wrapper">
         <div class="input-wrapper">
             <span class="selected-option">{{selectedOption ? selectedOption : 'Select'}}</span>

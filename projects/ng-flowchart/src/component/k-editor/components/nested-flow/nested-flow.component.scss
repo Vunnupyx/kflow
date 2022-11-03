@@ -12,12 +12,8 @@
         background: #f0f0f0;
     }
 
-    & .dialog-close {
-        font-family: none, serif;
-        font-size: 36px;
-        line-height: 18px;
-        cursor: pointer;
-        margin: 0 0 10px auto;
+    &:hover .dialog-close {
+        display: block;
     }
 }
 

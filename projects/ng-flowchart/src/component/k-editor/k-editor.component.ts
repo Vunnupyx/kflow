@@ -177,6 +177,10 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     this._emitValueChange();
   }
 
+  delete(id) {
+    this.canvas.getFlow().getStep(id).delete();
+  }
+
   onGapChanged(event) {
     this.options = {
       ...this.options,
