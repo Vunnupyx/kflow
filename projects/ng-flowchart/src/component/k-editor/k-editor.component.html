@@ -4,7 +4,6 @@
             ngFlowchartCanvas
             [ngFlowchartOptions]="options"
             [ngFlowchartCallbacks]="callbacks"
-            [disabled]="disabled"
     ></div>
     <div id="palette">
         <section>
@@ -29,39 +28,6 @@
                 <div class="plugin-op__item plugin-op__item_long">
                     <span>{{ op.paletteName }}</span>
                 </div>
-            </div>
-        </section>
-        <section>
-            <div class="sub-section">
-                <label for="step-gap-select" class="wide">Step Gap</label>
-                <select
-                        name="step-gap-select"
-                        id="step-gap-select"
-                        class="wide"
-                        (change)="onGapChanged($event)"
-                >
-                    <option value="30">30</option>
-                    <option value="40" selected>40</option>
-                    <option value="60">60</option>
-                </select>
-            </div>
-            <div class="sub-section">
-                <label for="parallel">Multiple child nodes</label>
-                <input
-                        type="checkbox"
-                        id="parallel"
-                        name="parallel"
-                        (change)="onMultipleChildNodesChange($event)"
-                />
-            </div>
-            <div class="sub-section">
-                <label for="disabled">Disabled</label>
-                <input
-                        type="checkbox"
-                        id="disabled"
-                        name="disabled"
-                        (change)="disabled = $event.target.checked"
-                />
             </div>
         </section>
         <section>

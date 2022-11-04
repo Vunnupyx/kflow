@@ -86,8 +86,6 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
   @ViewChild(NgFlowchartCanvasDirective)
   canvas: NgFlowchartCanvasDirective;
 
-  disabled = false;
-
   constructor(
     private stepRegistry: NgFlowchartStepRegistry,
     private changeDetectorRef: ChangeDetectorRef,
@@ -179,20 +177,6 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
 
   delete(id) {
     this.canvas.getFlow().getStep(id).delete();
-  }
-
-  onGapChanged(event) {
-    this.options = {
-      ...this.options,
-      stepGap: parseInt(event.target.value)
-    };
-  }
-
-  onMultipleChildNodesChange(event) {
-    this.options = {
-      ...this.options,
-      allowMultipleChildNodes: event.target.checked
-    };
   }
 
   private async _renderValue(value: object) {
