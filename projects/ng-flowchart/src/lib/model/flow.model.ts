@@ -145,9 +145,13 @@ export namespace NgFlowchart {
   };
 
   export type DropStatus = 'SUCCESS' | 'PENDING' | 'FAILED';
-  export type DropPosition = 'RIGHT' | 'LEFT' | 'BELOW' | 'ABOVE';
+  export type DropPosition = 'RIGHT' | 'LEFT' | 'BELOW' | 'ABOVE' | 'CENTER';
 
   export type Callbacks = {
+    /**
+     * Called when user change step from the palette
+     */
+    onChangeStep?: () => void;
     /**
      * Called when user drops a new step from the palette or moves an existing step
      */

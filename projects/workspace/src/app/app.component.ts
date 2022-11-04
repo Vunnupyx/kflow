@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { Variable, VariableGroup } from 'projects/ng-flowchart/src/models';
+import { SerializerPipe } from 'projects/ng-flowchart/src/component/k-editor/service/serializer.pipe';
 
 @Component({
   selector: 'app-root',
@@ -14,26 +15,16 @@ export class AppComponent {
   sampleJson = {
   "root": {
     "id": "s1624206177187",
-    "type": "log",
-    "data": {
-      "name": "Log",
-      "icon": {
-        "name": "log-icon",
-        "color": "blue"
-      },
-      "config": {
-        "message": null,
-        "severity": null
-      }
-    },
+    "type": "numeric",
+    "data": 2,
     "children": [
       {
         "id": "s1624206178618",
-        "type": "log",
+        "type": "cross",
         "data": {
           "name": "Log",
           "icon": {
-            "name": "log-icon",
+            "name": "cross.svg",
             "color": "blue"
           },
           "config": {
@@ -44,18 +35,8 @@ export class AppComponent {
         "children": [
           {
             "id": "s1624206180286",
-            "type": "log",
-            "data": {
-              "name": "Log",
-              "icon": {
-                "name": "log-icon",
-                "color": "blue"
-              },
-              "config": {
-                "message": null,
-                "severity": null
-              }
-            },
+            "type": "numeric",
+            "data": 2,
             "children": []
           }
         ]
@@ -64,7 +45,9 @@ export class AppComponent {
   }
 };
 
-  varaibles = [
+  constructor(private serializerPipe: SerializerPipe) { }
+
+  variables = [
     {
       id: 'constants',
       name: 'Constants',
@@ -124,5 +107,6 @@ export class AppComponent {
   public onValueChange(source: string, value: object): void {
     this.dataBucket[source] = value;
     console.log('UPD', source, value);
+    console.log(this.serializerPipe.transform(value));
   }
 }

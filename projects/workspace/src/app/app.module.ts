@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { KEditorModule } from '../../../ng-flowchart/src/component/k-editor/k-editor.module';
+import { KEditorModule } from 'projects/ng-flowchart/src/component/k-editor/k-editor.module';
+import { SerializerModule } from 'projects/ng-flowchart/src/component/k-editor/service/serializer.module';
+
 
 
 
@@ -11,7 +13,8 @@ import { KEditorModule } from '../../../ng-flowchart/src/component/k-editor/k-ed
   ],
   imports: [
     BrowserModule,
-    KEditorModule
+    KEditorModule,
+    SerializerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

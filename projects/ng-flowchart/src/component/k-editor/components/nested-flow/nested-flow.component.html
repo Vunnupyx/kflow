@@ -2,13 +2,12 @@
     class="nested-flow-step"
     #canvasContent
 >
-    <span>{{ data.name }}</span>
+    <div class="dialog-close" (click)="delete()">×</div>
     <div
         ngFlowchartCanvas
         [ngFlowchartOptions]="options"
         [ngFlowchartCallbacks]="callbacks"
         class="nested-canvas-content"
     >
-
     </div>
 </div>

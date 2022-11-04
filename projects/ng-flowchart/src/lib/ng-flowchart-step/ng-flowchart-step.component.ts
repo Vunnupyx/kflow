@@ -39,6 +39,11 @@ export class NgFlowchartStepComponent<T = any> {
     }
   }
 
+  @HostListener('drop', ['$event'])
+  onDropEnd(event: DragEvent) {
+    this.showTree();
+  }
+
   @HostListener('dragend', ['$event'])
   onMoveEnd(event: DragEvent) {
     this.showTree();
@@ -104,8 +109,20 @@ export class NgFlowchartStepComponent<T = any> {
   async onUpload(data: T) { }
 
   getDropPositionsForStep(step: NgFlowchart.Step): NgFlowchart.DropPosition[] {
-    return ['BELOW', 'LEFT', 'RIGHT', 'ABOVE'];
+    return ['BELOW', 'LEFT', 'RIGHT', 'ABOVE', 'CENTER'];
   }
+
+  setData(data: T): void {
+    this.data = data;
+    this.canvas.options.callbacks.onChangeStep();
+  }
+
+  delete() {
+    this.destroy(false);
+    this.canvas.options.callbacks.afterDeleteStep &&
+    this.canvas.options.callbacks.afterDeleteStep(this);
+  }
+
 
   ngOnInit(): void {
 
@@ -183,9 +200,6 @@ export class NgFlowchartStepComponent<T = any> {
       this.destroy0(parentIndex, recursive);
 
       this.canvas.reRender();
-
-      this.canvas.options.callbacks.afterDeleteStep && 
-      this.canvas.options.callbacks.afterDeleteStep(this)
 
       return true;
     }
@@ -270,23 +284,23 @@ export class NgFlowchartStepComponent<T = any> {
   }
 
   /**
-   * Returns the total width extent (in pixels) of this node tree
+   * Returns the total height extent (in pixels) of this node tree
    * @param stepGap The current step gap for the flow canvas
    */
-  getNodeTreeWidth(stepGap: number) {
-    const currentNodeWidth = this.nativeElement.getBoundingClientRect().width;
+  getNodeTreeHeight(stepGap: number) {
+    const currentNodeHeight = this.nativeElement.getBoundingClientRect().height;
 
     if (!this.hasChildren()) {
-      return this.nativeElement.getBoundingClientRect().width;
+      return this.nativeElement.getBoundingClientRect().height;
     }
 
     let childWidth = this._children.reduce((childTreeWidth, child) => {
-      return childTreeWidth += child.getNodeTreeWidth(stepGap);
+      return childTreeWidth += child.getNodeTreeHeight(stepGap);
     }, 0)
 
     childWidth += stepGap * (this._children.length - 1);
 
-    return Math.max(currentNodeWidth, childWidth);
+    return Math.max(currentNodeHeight, childWidth);
   }
 
   /**

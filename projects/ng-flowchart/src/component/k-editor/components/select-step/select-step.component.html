@@ -1,0 +1,30 @@
+<div #canvasContent class="select">
+    <div class="dialog-close" (click)="delete()">×</div>
+    <button (click)="displayDropdown($event)" class="cascade-wrapper">
+        <div class="input-wrapper">
+            <span class="selected-option">{{selectedOption ? selectedOption : 'Select'}}</span>
+        </div>
+        <span (click)="reset($event)" *ngIf="selectedOption" class="close">×</span>
+        <span *ngIf="!selectedOption" class="caret caret-down"></span>
+    </button>
+
+    <div *ngIf="showDropDown" class="dropdown-wrapper">
+        <ul class="main-nav">
+            <ng-container *ngTemplateOutlet="recursiveDropdownTmpl; context:{ list: dropdownOptions }"></ng-container>
+        </ul>
+        <ng-template #recursiveDropdownTmpl let-list="list">
+            <li (click)="displayCascade(option, $event)" *ngFor="let option of list"
+                [ngClass]="{'active' : isItemSelected(option?.id),'disable': option?.disable}" id="{{option?.id}}"
+                tabIndex="1">
+                {{option?.name }}
+                <span *ngIf="option?.variables?.length"
+                      [ngClass]="isItemSelected(option?.id) ? 'active-caret-right' : 'caret-right'"
+                      class="caret"></span>
+                <ul *ngIf="option?.variables?.length > 0 && option?.showSubmenu" class="submenu">
+                    <ng-container
+                            *ngTemplateOutlet="recursiveDropdownTmpl; context:{ list: option.variables }"></ng-container>
+                </ul>
+            </li>
+        </ng-template>
+    </div>
+</div>

@@ -10,7 +10,7 @@ export type NestedData = {
   templateUrl: './nested-flow.component.html',
   styleUrls: ['./nested-flow.component.scss']
 })
-export class NestedFlowComponent extends NgFlowchartStepComponent implements OnInit, OnDestroy, AfterViewInit {
+export class NestedFlowComponent extends NgFlowchartStepComponent implements OnInit, AfterViewInit {
 
   @ViewChild(NgFlowchartCanvasDirective)
   nestedCanvas: NgFlowchartCanvasDirective;
@@ -35,10 +35,9 @@ export class NestedFlowComponent extends NgFlowchartStepComponent implements OnI
 
   constructor() {
     super();
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
+    this.callbacks.onChangeStep = () => this.canvas.options.callbacks.onChangeStep();
+    this.callbacks.afterDeleteStep = (x) => this.canvas.options.callbacks.afterDeleteStep(x);
+    this.callbacks.onDropStep = (x) =>  this.canvas.options.callbacks.onDropStep(x);
   }
 
   ngAfterViewInit(): void {
@@ -46,11 +45,6 @@ export class NestedFlowComponent extends NgFlowchartStepComponent implements OnI
     this.addAlternateClass();
   }
 
-  ngOnDestroy() {
-    this.nestedCanvas?.getFlow().clear()
-  }
-
-  // add nested-alt class to alternate nested flows for better visibility
   addAlternateClass(): void {  
     const parentCanvasWrapperClasses = (this.canvas.viewContainer.element.nativeElement as HTMLElement).parentElement.classList;
     if(parentCanvasWrapperClasses.contains('nested-flow-step') && !parentCanvasWrapperClasses.contains('nested-alt')){
@@ -73,16 +67,6 @@ export class NestedFlowComponent extends NgFlowchartStepComponent implements OnI
       }
     }
   }
-
-  canDrop(dropEvent: NgFlowchart.DropTarget): boolean {
-    return true;
-  }
-
-  canDeleteStep(): boolean {
-    return true;
-  }
-
-  
 
   async onUpload(data: NestedData) { 
     if(!this.nestedCanvas) {

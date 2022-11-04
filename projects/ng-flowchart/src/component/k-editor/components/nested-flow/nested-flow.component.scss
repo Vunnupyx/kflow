@@ -5,16 +5,21 @@
     flex-direction: column;
     border-radius: 4px;
     padding: 1em;
-    min-width: 300px;
-    min-height: 300px;
+    min-width: 304px;
+    min-height: 151px;
 
     &.nested-alt {
         background: #f0f0f0;
+    }
+
+    &:hover .dialog-close {
+        display: block;
     }
 }
 
 .nested-canvas-content {
     width: 100%;
+    overflow: visible;
     flex: 1 0 100%;
     display: flex;
     background-size: 30px 30px;

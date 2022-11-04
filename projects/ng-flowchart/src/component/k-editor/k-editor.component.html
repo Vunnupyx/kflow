@@ -17,14 +17,18 @@
           data: item.data
         }"
             >
-                <span>{{ item.name }}</span>
+                <div class="plugin-op__item">
+                    <img alt="" src="assets/images/icons/{{item.data.icon.name}}">
+                </div>
             </div>
             <div
                     class="plugin-op"
                     *ngFor="let op of customOps"
                     [ngFlowchartStep]="op.step"
             >
-                <span>{{ op.paletteName }}</span>
+                <div class="plugin-op__item plugin-op__item_long">
+                    <span>{{ op.paletteName }}</span>
+                </div>
             </div>
         </section>
         <section>
@@ -68,9 +72,11 @@
                     class="card"
                     [attr.name]="data.data.name"
                     #card
-                    (click)="onDelete(data.id)"
             >
-                <span>{{ data.data.name }}</span>
+                <div (click)="this.delete(data.id)"
+                     class="dialog-close">×
+                </div>
+                <img src="assets/images/icons/{{data.data.icon.name}}" alt="">
             </div>
         </ng-template>
     </div>

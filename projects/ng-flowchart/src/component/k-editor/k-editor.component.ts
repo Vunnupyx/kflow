@@ -1,12 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { CustomStepComponent } from './components/custom-step/custom-step.component';
-import { NestedFlowComponent } from './components/nested-flow/nested-flow.component';
-import { FormStepComponent } from './components/form-step/form-step.component';
-import { RouteStepComponent } from './components/custom-step/route-step/route-step.component';
 import { NgFlowchart } from '../../lib/model/flow.model';
 import { NgFlowchartStepRegistry } from '../../lib/ng-flowchart-step-registry.service';
 import { NgFlowchartCanvasDirective } from '../../lib/ng-flowchart-canvas.directive';
 import { VariableGroup } from '../../models';
+import { NumericStepComponent } from './components/numeric-step/numeric-step.component';
+import { SelectStepComponent } from './components/select-step/select-step.component';
+import { NestedFlowComponent } from './components/nested-flow/nested-flow.component';
 
 @Component({
   selector: 'k-editor',
@@ -14,8 +13,8 @@ import { VariableGroup } from '../../models';
   styleUrls: ['./k-editor.component.scss']
 })
 export class KEditorComponent implements OnChanges, AfterViewInit {
-  @Input() variables: VariableGroup;
-  
+  @Input() variables: VariableGroup[];
+
   @Input() value: object;
   @Output() valueChange: EventEmitter<object> = new EventEmitter<object>();
 
@@ -34,10 +33,46 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
   items = [
     {
       name: 'Logger',
-      type: 'log',
+      type: 'plus',
       data: {
         name: 'Log',
-        icon: { name: 'log-icon', color: 'blue' },
+        icon: { name: 'plus.svg', color: 'blue' },
+        config: {
+          message: null,
+          severity: null
+        }
+      }
+    },
+    {
+      name: 'Logger',
+      type: 'minus',
+      data: {
+        name: 'Log',
+        icon: { name: 'minus.svg', color: 'blue' },
+        config: {
+          message: null,
+          severity: null
+        }
+      }
+    },
+    {
+      name: 'Logger',
+      type: 'cross',
+      data: {
+        name: 'Log',
+        icon: { name: 'cross.svg', color: 'blue' },
+        config: {
+          message: null,
+          severity: null
+        }
+      }
+    },
+    {
+      name: 'Logger',
+      type: 'divide',
+      data: {
+        name: 'Log',
+        icon: { name: 'divide.svg', color: 'blue' },
         config: {
           message: null,
           severity: null
@@ -46,37 +81,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     }
   ];
 
-  customOps = [
-    {
-      paletteName: 'Router',
-      step: {
-        template: CustomStepComponent,
-        type: 'router',
-        data: {
-          name: 'Routing Block'
-        }
-      }
-    },
-    {
-      paletteName: 'Form Step',
-      step: {
-        template: FormStepComponent,
-        type: 'form-step',
-        data: '123'
-      }
-    },
-    {
-      paletteName: 'Nested Flow',
-      step: {
-        template: NestedFlowComponent,
-        type: 'nested-flow',
-        data: {
-          name: 'Nested Flow'
-        }
-      }
-
-    }
-  ];
+  customOps;
 
   @ViewChild(NgFlowchartCanvasDirective)
   canvas: NgFlowchartCanvasDirective;
@@ -90,6 +95,8 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     this.callbacks.onDropError = (x) => this.onDropError(x);
     this.callbacks.onMoveError = (x) => this.onMoveError(x);
     this.callbacks.onDropStep = () => this.onDropStep();
+    this.callbacks.onChangeStep = () => this.onChangeStep();
+    this.callbacks.afterDeleteStep = () => this.onDeleteStep();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -99,17 +106,61 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.stepRegistry.registerStep('log', this.normalStepTemplate);
-    this.stepRegistry.registerStep('router', CustomStepComponent);
-    this.stepRegistry.registerStep('nested-flow', NestedFlowComponent);
-    this.stepRegistry.registerStep('form-step', FormStepComponent);
-    this.stepRegistry.registerStep('route-step', RouteStepComponent);
+    this.stepRegistry.registerStep('plus', this.normalStepTemplate);
+    this.stepRegistry.registerStep('minus', this.normalStepTemplate);
+    this.stepRegistry.registerStep('cross', this.normalStepTemplate);
+    this.stepRegistry.registerStep('divide', this.normalStepTemplate);
+    this.stepRegistry.registerStep('numeric', NumericStepComponent);
+    this.stepRegistry.registerStep('select', SelectStepComponent);
+    this.stepRegistry.registerStep('nested', NestedFlowComponent);
 
     this._renderValue(this.value);
     this.changeDetectorRef.detectChanges();
   }
 
+  ngOnInit() {
+    this.customOps = [
+      {
+        paletteName: 'Numeric',
+        step: {
+          template: NumericStepComponent,
+          type: 'numeric',
+          data: null
+        }
+      },
+      {
+        paletteName: 'Select',
+        step: {
+          template: SelectStepComponent,
+          type: 'select',
+          data: {
+            selectedOption: [],
+            dropdownOptions: this.variables,
+          }
+        }
+      },
+      {
+        paletteName: 'Group',
+        step: {
+          template: NestedFlowComponent,
+          type: 'nested',
+          data: {
+            name: 'Nested Flow'
+          }
+        }
+      },
+    ];
+  }
+
+  onChangeStep() {
+    this._emitValueChange();
+  }
+
   onDropStep() {
+    this._emitValueChange();
+  }
+
+  onDeleteStep() {
     this._emitValueChange();
   }
 
@@ -126,6 +177,10 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     this._emitValueChange();
   }
 
+  delete(id) {
+    this.canvas.getFlow().getStep(id).delete();
+  }
+
   onGapChanged(event) {
     this.options = {
       ...this.options,
@@ -140,13 +195,8 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     };
   }
 
-  onDelete(id) {
-    this.canvas.getFlow().getStep(id).destroy(true);
-    this._emitValueChange();
-  }
-
   private async _renderValue(value: object) {
-    if (!this.canvas) { 
+    if (!this.canvas) {
       return;
     }
     await this.canvas.getFlow().upload(value);

@@ -65,7 +65,7 @@ export class CanvasRendererService {
         let totalTreeHeight = 0;
 
         rootNode.children.forEach(child => {
-            let totalChildHeight = child.getNodeTreeWidth(this.getStepGap());
+            let totalChildHeight = child.getNodeTreeHeight(this.getStepGap());
             totalChildHeight = totalChildHeight / this.scale
             childTreeHeights[child.nativeElement.id] = totalChildHeight;
 
@@ -175,14 +175,19 @@ export class CanvasRendererService {
                 result = 'deadzone';
             }
 
-            if (absYDistance > absXDistance && !targetStep.isRootElement() && this.options.options.allowMultipleChildNodes) {
+            if (this.equalsArithmeticOperators(targetStep) && this.equalsArithmeticOperators(stepToDrop)) {
+                result = {
+                    step: targetStep,
+                    position: 'CENTER',
+                    proximity: absYDistance
+                };
+            } else if (absYDistance > absXDistance && !targetStep.isRootElement() && this.options.options.allowMultipleChildNodes) {
                 result = {
                     step: targetStep,
                     position: yDiff > 0 ? 'BELOW' : 'ABOVE',
                     proximity: absYDistance
                 };
-            }
-            else {
+            } else {
                 result = {
                     step: targetStep,
                     position: xDiff > 0 ? 'RIGHT' : 'LEFT',
@@ -199,6 +204,29 @@ export class CanvasRendererService {
         }
 
         return result;
+    }
+
+    private isDropAcceptable(targetStep: NgFlowchartStepComponent, stepToDrop: NgFlowchartStepComponent | NgFlowchart.Step, position: string): boolean {
+        if (stepToDrop && this) {
+            const hasArithmeticOperatorStep = this.equalsArithmeticOperators(stepToDrop);
+            if (position === 'RIGHT' && targetStep.children[0]) {
+                return !hasArithmeticOperatorStep || !this.equalsArithmeticOperators(targetStep.children[0]);
+            } else if (position === 'LEFT' && targetStep.parent) {
+                return !hasArithmeticOperatorStep || !this.equalsArithmeticOperators(targetStep.parent);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private equalsArithmeticOperators(step: NgFlowchartStepComponent | NgFlowchart.Step): boolean {
+        const operatorsType = ['minus', 'plus', 'cross', 'divide'];
+        for (let operatorType of operatorsType) {
+            if (operatorType === step.type) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private adjustDimensions(flow: CanvasFlow, canvasRect: DOMRect): void {
@@ -226,9 +254,9 @@ export class CanvasRendererService {
                 this.render(flow, true, true);
             }
         } else if(widthDiff > widthBorderGap) {
-            var totalTreeWidth = this.getTotalTreeWidth(flow);
+            let totalTreeWidth = widthDiff - widthBorderGap;
             if(this.isNestedCanvas()) {
-                this.getCanvasContentElement().style.minWidth = `${totalTreeWidth + widthBorderGap}px`;
+                this.getCanvasContentElement().style.minWidth = `${canvasRect.width - totalTreeWidth}px`;
                 if (this.options.options.centerOnResize) {
                     this.render(flow, true, true);
                 }
@@ -241,7 +269,7 @@ export class CanvasRendererService {
             }
         }
         
-        const heightBorderGap = 50;
+        const heightBorderGap = 30;
         const heightDiff = canvasRect.height - (maxBottom - canvasRect.top);
         if (heightDiff < heightBorderGap) {
             let growHeight = heightBorderGap;
@@ -249,27 +277,24 @@ export class CanvasRendererService {
                 growHeight += Math.abs(heightDiff);
             }
             this.getCanvasContentElement().style.minHeight = `${canvasRect.height + growHeight}px`;
+            if (this.options.options.centerOnResize) {
+                this.render(flow, true, true);
+            }
         } else if(heightDiff > heightBorderGap){
             if(this.isNestedCanvas()) {
                 let shrinkHeight = heightDiff - heightBorderGap;
                 this.getCanvasContentElement().style.minHeight = `${canvasRect.height - shrinkHeight}px`;
+                if (this.options.options.centerOnResize) {
+                    this.render(flow, true, true);
+                }
             } else if(this.getCanvasContentElement().style.minHeight) {
                 // reset normal canvas height if auto height set
                 this.getCanvasContentElement().style.minHeight = null;
+                if (this.options.options.centerOnResize) {
+                    this.render(flow, true, true);
+                }
             }
         }
-    }
-
-    private getTotalTreeWidth(flow: CanvasFlow): number {
-        let totalTreeWidth = 0;
-        const rootWidth = flow.rootStep.getCurrentRect().width / this.scale;
-        flow.rootStep.children.forEach(child => {
-            let totalChildWidth = child.getNodeTreeWidth(this.getStepGap());
-            totalTreeWidth += totalChildWidth / this.scale;
-        });
-        totalTreeWidth += (flow.rootStep.children.length - 1) * this.getStepGap();
-        // total tree width doesn't give root width
-        return Math.max(totalTreeWidth, rootWidth);
     }
 
     private findBestMatchForSteps(dragStep: NgFlowchart.Step, event: DragEvent, steps: ReadonlyArray<NgFlowchartStepComponent>): DropProximity | null {
@@ -293,7 +318,9 @@ export class CanvasRendererService {
                 }
                 //if this step is closer than previous best match then we have a new best
                 else if (bestMatch == null || bestMatch.proximity > position.proximity) {
-                    bestMatch = position;
+                    if (this.isDropAcceptable(step, dragStep, position.position)) {
+                        bestMatch = position;
+                    }
                 }
             }
         }
