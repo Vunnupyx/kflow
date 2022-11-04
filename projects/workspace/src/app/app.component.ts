@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Variable, VariableGroup } from 'projects/ng-flowchart/src/models';
-import { SerializerPipe } from 'projects/ng-flowchart/src/component/k-editor/service/serializer.pipe';
 
 @Component({
   selector: 'app-root',
@@ -44,8 +43,6 @@ export class AppComponent {
     ]
   }
 };
-
-  constructor(private serializerPipe: SerializerPipe) { }
 
   variables = [
     {
@@ -107,6 +104,5 @@ export class AppComponent {
   public onValueChange(source: string, value: object): void {
     this.dataBucket[source] = value;
     console.log('UPD', source, value);
-    console.log(this.serializerPipe.transform(value));
   }
 }
