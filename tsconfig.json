@@ -16,9 +16,8 @@
       "dom"
     ],
     "paths": {
-      "ng-flowchart": [
-        "dist/ng-flowchart/ng-flowchart",
-        "dist/ng-flowchart"
+      "kflow": [
+        "dist/kflow"
       ]
     }
   }

@@ -11,7 +11,7 @@ export class SelectStepComponent extends NgFlowchartStepComponent implements OnI
     dropdownOptions: IDropdownOptions[];
     selectedOption: string;
     selectedListItem: IDropdownOptions[];
-    showDropDown = false;
+    showDropDown: boolean = false;
 
     ngOnInit(): void {
         this.dropdownOptions = this.data.dropdownOptions;

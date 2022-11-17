@@ -3,30 +3,30 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng-flowchart": {
+    "kflow": {
       "projectType": "library",
-      "root": "projects/ng-flowchart",
-      "sourceRoot": "projects/ng-flowchart/src",
+      "root": "projects/kflow",
+      "sourceRoot": "projects/kflow/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "projects/ng-flowchart/tsconfig.lib.json",
-            "project": "projects/ng-flowchart/ng-package.json"
+            "tsConfig": "projects/kflow/tsconfig.lib.json",
+            "project": "projects/kflow/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/ng-flowchart/tsconfig.lib.prod.json"
+              "tsConfig": "projects/kflow/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ng-flowchart/src/test.ts",
-            "tsConfig": "projects/ng-flowchart/tsconfig.spec.json",
-            "karmaConfig": "projects/ng-flowchart/karma.conf.js"
+            "main": "projects/kflow/src/test.ts",
+            "tsConfig": "projects/kflow/tsconfig.spec.json",
+            "karmaConfig": "projects/kflow/karma.conf.js"
           }
         }
       }

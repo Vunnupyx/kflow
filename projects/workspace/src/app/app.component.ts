@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Variable, VariableGroup } from 'projects/ng-flowchart/src/models';
+import { Variable, VariableGroup } from '@solidbranch/kflow/models';
 
 @Component({
   selector: 'app-root',

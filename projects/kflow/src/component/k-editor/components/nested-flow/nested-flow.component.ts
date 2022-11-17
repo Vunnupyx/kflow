@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { NgFlowchart, NgFlowchartCanvasDirective, NgFlowchartStepComponent } from 'projects/ng-flowchart/src';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { NgFlowchartStepComponent } from '../../../../lib/ng-flowchart-step/ng-flowchart-step.component';
+import { NgFlowchartCanvasDirective } from '../../../../lib/ng-flowchart-canvas.directive';
+import { NgFlowchart } from '../../../../lib/model/flow.model';
 
 export type NestedData = {
   nested: any

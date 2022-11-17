@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgFlowchartStepComponent } from 'projects/ng-flowchart/src/lib/ng-flowchart-step/ng-flowchart-step.component';
+import {NgFlowchartStepComponent} from '../../../../lib/ng-flowchart-step/ng-flowchart-step.component';
 
 @Component({
   selector: 'lib-numeric-step',
