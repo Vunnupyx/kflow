@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Variable, VariableGroup } from '@solidbranch/kflow/models';
+import { SerializerService } from '../../../kflow/src/component/k-editor/service/serializer.service';
 
 @Component({
   selector: 'app-root',
@@ -43,6 +44,9 @@ export class AppComponent {
     ]
   }
 };
+
+  constructor(public serializerService: SerializerService) {
+  }
 
   variables = [
     {
@@ -101,7 +105,7 @@ export class AppComponent {
     } as VariableGroup,
   ];
 
-  public onValueChange(source: string, value: object): void {
+  public onValueChange(source: number, value: object): void {
     this.dataBucket[source] = value;
     console.log('UPD', source, value);
   }

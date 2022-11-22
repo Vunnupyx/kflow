@@ -1,6 +1,6 @@
-<button (click)="visibleInstanceIndex = 0">Instance #1 {{this.dataBucket[0] | serializer}}</button>
-<button (click)="visibleInstanceIndex = 1">Instance #2 {{this.dataBucket[1] | serializer}}</button>
-<button (click)="visibleInstanceIndex = 2">Instance #3 {{this.dataBucket[2] | serializer}}</button>
+<button (click)="visibleInstanceIndex = 0">Instance #1 {{this.serializerService.serialize(this.dataBucket[0])}}</button>
+<button (click)="visibleInstanceIndex = 1">Instance #2 {{this.serializerService.serialize(this.dataBucket[1])}}</button>
+<button (click)="visibleInstanceIndex = 2">Instance #3 {{this.serializerService.serialize(this.dataBucket[2])}}</button>
 
 <k-editor *ngIf="visibleInstanceIndex === 0" [value]="dataBucket[0] || sampleJson" [variables]="variables" (valueChange)="onValueChange(0, $event)"></k-editor>
 <k-editor *ngIf="visibleInstanceIndex === 1" [value]="dataBucket[1] || sampleJson" [variables]="variables" (valueChange)="onValueChange(1, $event)"></k-editor>

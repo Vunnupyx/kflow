@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
-import { SerializerPipe } from './serializer.pipe';
+import { SerializerService } from './serializer.service';
+import { DeserializerService } from './deserializer.service';
 
 
 @NgModule({
-    declarations: [SerializerPipe],
-    providers: [SerializerPipe],
-    exports: [SerializerPipe]
+    providers: [DeserializerService, SerializerService],
 })
 export class SerializerModule {
 }

@@ -12,5 +12,6 @@ export * from './lib/ng-flowchart-arrow/ng-flowchart-arrow.component';
 export * from './lib/ng-flowchart.module';
 export * from './component/k-editor/k-editor.module';
 export * from './component/k-editor/k-editor.component';
+export * from './component/k-editor/service';
 
 
