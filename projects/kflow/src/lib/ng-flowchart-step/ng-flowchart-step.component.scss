@@ -33,7 +33,7 @@
     border-radius: 100%;
     position: absolute;
     z-index: 1;
-    background: darkred;
+    background: #4cd137;
 }
 
 .ngflowchart-step-wrapper[ngflowchart-drop-hover]::after {
@@ -43,7 +43,7 @@
     border-radius: 100%;
     position: absolute;
     z-index: 0;
-    background: rgb(192, 123, 123);
+    background: #a3e798;
     //TODO mixin so theme can be set
     animation: backgroundOpacity 2s linear infinite;
 }

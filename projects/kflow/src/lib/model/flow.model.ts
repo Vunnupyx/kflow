@@ -26,7 +26,7 @@ export namespace NgFlowchart {
      */
     async upload(json: string | object): Promise<void> {
       let jsonObj = typeof json === 'string' ? JSON.parse(json) : json;
-      let root: any = jsonObj.root;
+      let root: any = jsonObj?.root;
       this.clear();
 
       await this.canvas.upload(root);

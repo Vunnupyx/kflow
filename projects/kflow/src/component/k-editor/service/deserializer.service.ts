@@ -1,18 +1,22 @@
 import { Injectable } from '@angular/core';
+import { Variable, VariableGroup } from '../../../models';
 
 @Injectable()
 export class DeserializerService {
-    private outerModel: any;
+    private selectableOptions: VariableGroup[];
     private searchFormula: string[];
     private index: number;
 
-    public deserialize(value: string): any {
+    public deserialize(value: string, variables: VariableGroup[]): any {
         if (!value) {
-            return this.outerModel;
+            return;
         }
+
+        this.selectableOptions = variables;
         this.searchFormula = value.split(' ');
         this.index = this.searchFormula.length;
-        return { root: this.deserializeChildTree(this.outerModel) };
+
+        return {root: this.deserializeChildTree(undefined)};
     }
 
     private deserializeChildTree(rootNode: any): any {
@@ -35,9 +39,7 @@ export class DeserializerService {
                 },
                 children: rootNode ? [rootNode] : []
             };
-        }
-
-        if (this.searchFormula[this.index] === '-') {
+        } else if (this.searchFormula[this.index] === '-') {
             rootNode = {
                 id: this.index,
                 type: 'minus',
@@ -54,8 +56,7 @@ export class DeserializerService {
                 },
                 children: rootNode ? [rootNode] : []
             };
-        }
-        if (this.searchFormula[this.index] === '*') {
+        } else if (this.searchFormula[this.index] === '*') {
             rootNode = {
                 id: this.index,
                 type: 'cross',
@@ -72,9 +73,7 @@ export class DeserializerService {
                 },
                 children: rootNode ? [rootNode] : []
             };
-        }
-
-        if (this.searchFormula[this.index] === '/') {
+        } else if (this.searchFormula[this.index] === '/') {
             rootNode = {
                 id: this.index,
                 type: 'divide',
@@ -91,22 +90,33 @@ export class DeserializerService {
                 },
                 children: rootNode ? [rootNode] : []
             };
-        }
-
-        if (this.isNumber(this.searchFormula[this.index])) {
+        } else if (this.searchFormula[this.index] === '%') {
+            rootNode = {
+                id: this.index,
+                type: 'percent',
+                data: {
+                    name: 'Log',
+                    icon: {
+                        name: 'percent.svg',
+                        color: 'blue'
+                    },
+                    config: {
+                        message: null,
+                        severity: null
+                    }
+                },
+                children: rootNode ? [rootNode] : []
+            };
+        } else if (this.isNumber(this.searchFormula[this.index])) {
             rootNode = {
                 id: this.index,
                 type: 'numeric',
                 data: Number(this.searchFormula[this.index]),
                 children: rootNode ? [rootNode] : []
             };
-        }
-
-        if (this.searchFormula[this.index] === '(') {
+        } else if (this.searchFormula[this.index] === '(') {
             return rootNode;
-        }
-
-        if (this.searchFormula[this.index] === ')') {
+        } else if (this.searchFormula[this.index] === ')') {
             rootNode = {
                 id: this.index,
                 type: 'nested',
@@ -116,6 +126,24 @@ export class DeserializerService {
                 },
                 children: rootNode ? [rootNode] : []
             };
+        } else if (this.selectableOptions && this.searchFormula[this.index]) {
+            const searchOption = this.searchFormula[this.index].split('/');
+            let selectedOption = [];
+            searchOption.forEach((opt) => {
+                const optionSearchResult = selectedOption.length ? this.searchOpt(opt, selectedOption[0].variables) : this.searchOpt(opt, this.selectableOptions);
+                optionSearchResult && selectedOption.push(optionSearchResult);
+            });
+            if (selectedOption) {
+                rootNode = {
+                    id: this.index,
+                    type: 'select',
+                    data: {
+                        selectedOption: selectedOption,
+                        dropdownOptions: this.selectableOptions
+                    },
+                    children: rootNode ? [rootNode] : []
+                };
+            }
         }
 
         if (this.index < 0) {
@@ -129,5 +157,9 @@ export class DeserializerService {
         return ((value != null) &&
             (value !== '') &&
             !isNaN(Number(value.toString())));
+    }
+
+    private searchOpt(selectedOption: string, variables: VariableGroup[] | Variable[]) {
+        return variables.find((variable) => (variable.name === selectedOption));
     }
 }

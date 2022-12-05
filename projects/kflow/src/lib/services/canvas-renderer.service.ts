@@ -220,7 +220,7 @@ export class CanvasRendererService {
     }
 
     private equalsArithmeticOperators(step: NgFlowchartStepComponent | NgFlowchart.Step): boolean {
-        const operatorsType = ['minus', 'plus', 'cross', 'divide'];
+        const operatorsType = ['minus', 'plus', 'cross', 'divide', 'percent'];
         for (let operatorType of operatorsType) {
             if (operatorType === step.type) {
                 return true;

@@ -72,7 +72,19 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
       type: 'divide',
       data: {
         name: 'Log',
-        icon: { name: 'divide.svg', color: 'blue' },
+        icon: {name: 'divide.svg', color: 'blue'},
+        config: {
+          message: null,
+          severity: null
+        }
+      }
+    },
+    {
+      name: 'Logger',
+      type: 'percent',
+      data: {
+        name: 'Log',
+        icon: {name: 'percent.svg', color: 'blue'},
         config: {
           message: null,
           severity: null
@@ -108,6 +120,7 @@ export class KEditorComponent implements OnChanges, AfterViewInit {
     this.stepRegistry.registerStep('minus', this.normalStepTemplate);
     this.stepRegistry.registerStep('cross', this.normalStepTemplate);
     this.stepRegistry.registerStep('divide', this.normalStepTemplate);
+    this.stepRegistry.registerStep('percent', this.normalStepTemplate);
     this.stepRegistry.registerStep('numeric', NumericStepComponent);
     this.stepRegistry.registerStep('select', SelectStepComponent);
     this.stepRegistry.registerStep('nested', NestedFlowComponent);
