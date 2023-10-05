@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Variable, VariableGroup } from '@solidbranch/kflow/models';
-import { SerializerService } from '../../../kflow/src/component/k-editor/service/serializer.service';
+import { Variable, VariableGroup } from '@vunnupyx/kflow/models';
+import { SerializerService } from '@vunnupyx/kflow';
 
 @Component({
   selector: 'app-root',
@@ -13,37 +13,37 @@ export class AppComponent {
   visibleInstanceIndex = 0;
 
   sampleJson = {
-  "root": {
-    "id": "s1624206177187",
-    "type": "numeric",
-    "data": 2,
-    "children": [
-      {
-        "id": "s1624206178618",
-        "type": "cross",
-        "data": {
-          "name": "Log",
-          "icon": {
-            "name": "cross.svg",
-            "color": "blue"
+    root: {
+      id: 's1624206177187',
+      type: 'numeric',
+      data: 2,
+      children: [
+        {
+          id: 's1624206178618',
+          type: 'cross',
+          data: {
+            name: 'Log',
+            icon: {
+              name: 'cross.svg',
+              color: 'blue'
+            },
+            config: {
+              message: null,
+              severity: null
+            }
           },
-          "config": {
-            "message": null,
-            "severity": null
-          }
-        },
-        "children": [
-          {
-            "id": "s1624206180286",
-            "type": "numeric",
-            "data": 2,
-            "children": []
-          }
-        ]
-      }
-    ]
-  }
-};
+          children: [
+            {
+              id: 's1624206180286',
+              type: 'numeric',
+              data: 2,
+              children: []
+            }
+          ]
+        }
+      ]
+    }
+  };
 
   constructor(public serializerService: SerializerService) {
   }
